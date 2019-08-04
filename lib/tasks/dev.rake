@@ -2,6 +2,15 @@ namespace(:dev) do
   desc "Hydrate the database with some dummy data to look at so that developing is easier"
   task({ :prime => :environment}) do
 
+    levels = [
+      {number: 1, description: "What is the Movie record with an id of 6?"},
+      {number: 2, description: "Who directed Shawshank Redemption?"},
+      {number: 3, description: "How many movies has Francis Ford Coppola directed?"},
+      {number: 4, description: "What are the names of the movies Coppola directed?"},
+      {number: 5, description: "How many actors were in the Shawshank Redemption?"},
+      {number: 6, description: "What films has Morgan Freeman been in?"},
+    ]
+
     Movie.delete_all
     movies = [
       {id: 1, description: "", duration: 0, title: "The Shawshank Redemption", year: 1994, director_id: },
