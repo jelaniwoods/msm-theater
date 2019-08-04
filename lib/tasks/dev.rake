@@ -11,6 +11,8 @@ namespace(:dev) do
       {number: 6, description: "What films has Morgan Freeman been in?"},
     ]
 
+    Level.import(levels, {:validate => false})
+
     Movie.delete_all
     movies = [
       {id: 1, description: "", duration: 0, title: "The Shawshank Redemption", year: 1994, director_id: },
@@ -19,6 +21,8 @@ namespace(:dev) do
       {id: 6, description: "", duration: 0, title: "The Dark Knight", year: 2008, director_id: },
       {id: 21, description: "", duration: 0, title: "City of God", year: 2002, director_id: },
     ]
+
+    Movie.import(movies {:validate => false})
 
     Director.delete_all
 
@@ -29,6 +33,7 @@ namespace(:dev) do
       {id: 17, bio: "", dob: Date.parse("1966"), name: "Katia Lund"},
     ]
 
+    Director.import(directors {:validate => false})
     Actor.delete_all
 
     actors = [
@@ -50,6 +55,8 @@ namespace(:dev) do
       {id: 269, dob: Date.parse("June 8, 1970"), name: "Seu Jorge"},
       {id: 271, dob: Date.parse("April 15, 1983"), name: "Alice Braga"},
     ]
+
+    Actor,import(actors {:validate => false})
 
     Role.delete_all
 
@@ -77,6 +84,8 @@ namespace(:dev) do
       {id: 304, character_name: "Mane Galinha - Knockout Ned", actor_id: 269, movie_id: 21},
       {id: 306, character_name: "Angelica", actor_id: 271, movie_id: 21},
     ]
+
+    Role.import(roles {:validate => false})
 
   end
 end
