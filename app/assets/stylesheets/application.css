@@ -12,3 +12,12 @@
  *
  *= require_self
  */
+
+.movie {
+  border: 1px solid brown;
+  width: 200px;
+  padding: 1em;
+  margin: 1em;
+  text-align: center;
+  float: left;
+}

@@ -1,0 +1,12 @@
+<%= @res %>
+<div>
+  <%= @result.inspect %>
+</div>
+
+<div>
+  <% unless @type.nil? %>
+    <%= render partial: 'movie', collection: @result, as: :movie %>
+  <% else %>
+    <%= render partial: 'movie', object: @result, as: :movie %>
+  <% end %>
+</div>

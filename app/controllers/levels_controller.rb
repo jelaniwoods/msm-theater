@@ -7,7 +7,12 @@ class LevelsController < ApplicationController
 
   def results
     # result = eval(@query["input"])
-    @res = session[:query].last
+    @res = session[:query].last["input"]
+    @result = eval(@res)
+    @type = nil
+    if @result.methods.include?(:klass) && @result.klass == Movie
+      @type = Movie
+    end
   end
 
   def store
