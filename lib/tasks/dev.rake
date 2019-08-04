@@ -41,5 +41,33 @@ namespace(:dev) do
       {id: 269, dob: Date.parse("June 8, 1970"), name: "Seu Jorge"},
       {id: 271, dob: Date.parse("April 15, 1983"), name: "Alice Braga"},
     ]
+
+    Role.delete_all
+
+    roles = [
+      {id: 1, character_name: "Andy Dufresne", actor_id: 1, movie_id: 1},
+      {id: 2, character_name: "Ellis Boyd 'Red' Redding", actor_id: 2, movie_id: 1},
+      {id: 17, character_name: "Michael Corleone", actor_id: 17, movie_id: 2},
+      {id: 20, character_name: "Tom Hagen", actor_id: 20, movie_id: 2},
+      {id: 24, character_name: "Sollozzo", actor_id: 24, movie_id: 2},
+      {id: 25, character_name: "Kay Adams", actor_id: 25, movie_id: 2},
+      {id: 27, character_name: "Connie", actor_id: 27, movie_id: 2},
+      {id: 31, character_name: "Michel", actor_id: 17, movie_id: 3},
+      {id: 32, character_name: "Tom Hagen", actor_id: 20, movie_id: 3},
+      {id: 33, character_name: "Kay", actor_id: 25, movie_id: 3},
+      {id: 34, character_name: "Vito Corleone (as Robert DeNiro)", actor_id: 31, movie_id: 3},
+      {id: 36, character_name: "Connie Corleone", actor_id: 27, movie_id: 3},
+      {id: 76, character_name: "Bruce Wayne", actor_id: 71, movie_id: 6},
+      {id: 77, character_name: "Joker", actor_id: 72, movie_id: 6},
+      {id: 80, character_name: "Rachel", actor_id: 75, movie_id: 6},
+      {id: 81, character_name: "Gordon", actor_id: 76, movie_id: 6},
+      {id: 82, character_name: "Lucius Fox", actor_id: 2, movie_id: 6},
+      {id: 83, character_name: "Ramirez", actor_id: 77, movie_id: 6},
+      {id: 85, character_name: "Scarecrow", actor_id: 79, movie_id: 6},
+      {id: 298, character_name: "Buscape - Rocket", actor_id: 263, movie_id: 21},
+      {id: 304, character_name: "Mane Galinha - Knockout Ned", actor_id: 269, movie_id: 21},
+      {id: 306, character_name: "Angelica", actor_id: 271, movie_id: 21},
+    ]
+
   end
 end
