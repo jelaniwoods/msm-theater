@@ -1,12 +1,37 @@
 <%= @res %>
-<div>
-  <%= @result.inspect %>
-</div>
 
-<div>
-  <% unless @type.nil? %>
-    <%= render partial: 'movie', collection: @result, as: :movie %>
-  <% else %>
-    <%= render partial: 'movie', object: @result, as: :movie %>
-  <% end %>
+<div class="row">
+  <div class="col-md-12">
+    <div class="table-responsive">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>
+              title
+            </th>
+
+            <th>
+              year
+            </th>
+
+            <th>
+              duration
+            </th>
+
+            <th>
+              director_id
+            </th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <% unless @type.nil? %>
+            <%= render partial: 'movie', collection: @result, as: :movie %>
+          <% else %>
+            <%= render partial: 'movie', object: @result, as: :movie %>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
 </div>
