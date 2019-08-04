@@ -3,26 +3,26 @@ namespace(:dev) do
   task({ :prime => :environment}) do
 
     levels = [
-      {number: 1, description: "What is the Movie record with an id of 6?"},
-      {number: 2, description: "Who directed Shawshank Redemption?"},
-      {number: 3, description: "How many movies has Francis Ford Coppola directed?"},
-      {number: 4, description: "What are the names of the movies Coppola directed?"},
-      {number: 5, description: "How many actors were in the Shawshank Redemption?"},
-      {number: 6, description: "What films has Morgan Freeman been in?"},
+      {number: 1, directions: "What is the Movie record with an id of 6?"},
+      {number: 2, directions: "Who directed Shawshank Redemption?"},
+      {number: 3, directions: "How many movies has Francis Ford Coppola directed?"},
+      {number: 4, directions: "What are the names of the movies Coppola directed?"},
+      {number: 5, directions: "How many actors were in the Shawshank Redemption?"},
+      {number: 6, directions: "What films has Morgan Freeman been in?"},
     ]
 
     Level.import(levels, {:validate => false})
 
     Movie.delete_all
     movies = [
-      {id: 1, description: "", duration: 0, title: "The Shawshank Redemption", year: 1994, director_id: },
-      {id: 2, description: "", duration: 0, title: "The Godfather", year: 1972, director_id: },
-      {id: 3, description: "", duration: 0, title: "The Godfather: Part II", year: 1974, director_id: },
-      {id: 6, description: "", duration: 0, title: "The Dark Knight", year: 2008, director_id: },
-      {id: 21, description: "", duration: 0, title: "City of God", year: 2002, director_id: },
+      {id: 1, description: "", duration: 0, title: "The Shawshank Redemption", year: 1994, director_id: 1},
+      {id: 2, description: "", duration: 0, title: "The Godfather", year: 1972, director_id: 2},
+      {id: 3, description: "", duration: 0, title: "The Godfather: Part II", year: 1974, director_id: 17},
+      {id: 6, description: "", duration: 0, title: "The Dark Knight", year: 2008, director_id: 5},
+      {id: 21, description: "", duration: 0, title: "City of God", year: 2002, director_id: 2},
     ]
 
-    Movie.import(movies {:validate => false})
+    Movie.import(movies, {:validate => false})
 
     Director.delete_all
 
@@ -30,10 +30,10 @@ namespace(:dev) do
       {id: 1, bio: "", dob: Date.parse("January 28, 1959"), name: "Frank Darabont"},
       {id: 2, bio: "", dob: Date.parse("April 7, 1939"), name: "Francis Ford Coppola"},
       {id: 5, bio: "", dob: Date.parse("July 30, 1970"), name: "Christopher Nolan"},
-      {id: 17, bio: "", dob: Date.parse("1966"), name: "Katia Lund"},
+      {id: 17, bio: "", dob: nil, name: "Katia Lund"},
     ]
 
-    Director.import(directors {:validate => false})
+    Director.import(directors, {:validate => false})
     Actor.delete_all
 
     actors = [
@@ -56,7 +56,7 @@ namespace(:dev) do
       {id: 271, dob: Date.parse("April 15, 1983"), name: "Alice Braga"},
     ]
 
-    Actor,import(actors {:validate => false})
+    Actor.import(actors, {:validate => false})
 
     Role.delete_all
 
@@ -85,7 +85,7 @@ namespace(:dev) do
       {id: 306, character_name: "Angelica", actor_id: 271, movie_id: 21},
     ]
 
-    Role.import(roles {:validate => false})
+    Role.import(roles, {:validate => false})
 
   end
 end
