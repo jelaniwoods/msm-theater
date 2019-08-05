@@ -1,35 +1,18 @@
 <%= @res %>
-
+<%= @correct %>
+<hr>
 <div class="row">
   <div class="col-md-12">
     <div class="table-responsive">
       <table class="table table-striped">
-        <thead>
-          <tr>
-            <th>
-              id
-            </th>
-            <th>
-              title
-            </th>
 
-            <th>
-              year
-            </th>
-
-            <th>
-              duration
-            </th>
-
-            <th>
-              director_id
-            </th>
-          </tr>
-        </thead>
+        <%= render @header %>
 
         <tbody>
-          <% unless @type.nil? %>
+          <% if !@type.nil? %>
             <%= render partial: 'movie', collection: @result, as: :movie %>
+          <% elsif @return_type == "column" %>
+            <%= render partial: "movie_column", object: @result %>
           <% else %>
             <%= render partial: 'movie', object: @result, as: :movie %>
           <% end %>

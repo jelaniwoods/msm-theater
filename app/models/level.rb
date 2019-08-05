@@ -10,4 +10,9 @@
 #
 
 class Level < ApplicationRecord
+  has_many :answers
+
+  def valid_answer?(query)
+    answers.pluck(:content).include?(query)
+  end
 end

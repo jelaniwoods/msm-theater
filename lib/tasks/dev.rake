@@ -13,6 +13,44 @@ namespace(:dev) do
 
     Level.import(levels, {:validate => false})
 
+    level_1 = Level.find(1)
+    level_2 = Level.find(2)
+    level_3 = Level.find(3)
+    level_4 = Level.find(4)
+    level_5 = Level.find(5)
+    level_6 = Level.find(6)
+
+    answers = [
+      {content: "Movie.where({:id=>6}).first", level_id: level_1.id },
+      {content: "Movie.where({:id=>6}).at(0)", level_id: level_1.id },
+      {content: "Movie.where({:id=>6})[0]", level_id: level_1.id },
+      {content: "Movie.where(:id=>6)[0]", level_id: level_1.id },
+      {content: "Movie.where(:id=>6).first", level_id: level_1.id },
+      {content: "Movie.where(:id=>6).at(0)", level_id: level_1.id },
+      {content: "Movie.where(id:6).at(0)", level_id: level_1.id },
+      {content: "Movie.where(id:6)[0]", level_id: level_1.id },
+      {content: "Movie.where(id:6).first", level_id: level_1.id },
+      {content: "Movie.find(6)", level_id: level_1.id },
+      {content: "Movie.find_by(id:6)", level_id: level_1.id },
+      {content: "Movie.find_by(:id=>6)", level_id: level_1.id },
+      {content: "Movie.find_by({:id=>6})", level_id: level_1.id },
+      {content: "Movie.first", level_id: level_1.id },
+      {content: "Movie.all.first", level_id: level_1.id },
+      # {content: "", level_id: level_1.id },
+      # {content: "", level_id: level_1.id },
+      # {content: "", level_id: level_1.id },
+      # {content: "", level_id: level_1.id },
+      # {content: "", level_id: level_1.id },
+      # {content: "", level_id: level_1.id },
+      # {content: "", level_id: level_1.id },
+      # {content: "", level_id: level_1.id },
+      # {content: "", level_id: level_1.id },
+    ]
+
+    Answer.import(answers, {:validate => false})
+
+
+
     Movie.delete_all
     movies = [
       {id: 1, description: "", duration: 0, title: "The Shawshank Redemption", year: 1994, director_id: 1},
