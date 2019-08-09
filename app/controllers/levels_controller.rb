@@ -8,11 +8,31 @@ class LevelsController < ApplicationController
   def results
     # result = eval(@query["input"])
     q = session[:query].last["input"].gsub(" ", "")
+    pattern = /([A-Z][a-z]*).([a-z]*_?[a-z]*)\(?{?(:?[a-z]*):?(=?>?)(\w*)}?\)?\.?([a-z]*)\(?(\d?)\)?/
+    @matched_data = q.match(pattern)
+    @matched_data = @matched_data.to_a.drop 1
     @class_name = q.split(".").first
-    @column = q.split(".").last
-    @return_type = "column"
+    @column = @matched_data[2]
+
+    # could also determine this from input
+    relation = eval(@class_name).all.class
+    record = eval(@class_name).first.class
+    
     @res = session[:query].last["input"]
     @result = eval(q)
+    if @result.instance_of?(relation) || @result.instance_of?(ActiveRecord::QueryMethods::WhereChain)
+      @result = eval(q.gsub("()", "({})"))
+      @return_type = "collection"
+    elsif @result.instance_of? record
+      @return_type = "record"
+    elsif @result.instance_of? Array
+      @return_type = "array"
+    else
+      @return_type = "column"
+    end
+    p q
+    p eval(q).class
+    p @return_type
     @correct = @level.valid_answer?(q)
     @type = nil
     if @result.methods.include?(:klass) && @result.klass == Movie
