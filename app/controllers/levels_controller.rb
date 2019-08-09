@@ -19,7 +19,21 @@ class LevelsController < ApplicationController
     record = eval(@class_name).first.class
     
     @res = session[:query].last["input"]
-    @result = eval(q)
+    begin
+      @result = eval(q)
+      # something which might raise an exception
+    rescue ActiveRecord::RecordNotFound => some_variable
+      @result = "Record not found"
+    rescue SomeOtherException => some_other_variable
+      # code that deals with some other exception
+    else
+      # code that runs only if *no* exception was raised
+    ensure
+      # ensure that this code always runs, no matter what
+      # does not change the final value of the block
+    end
+
+
     if @result.instance_of?(relation) || @result.instance_of?(ActiveRecord::QueryMethods::WhereChain)
       @result = eval(q.gsub("()", "({})"))
       @return_type = "collection"
@@ -27,12 +41,11 @@ class LevelsController < ApplicationController
       @return_type = "record"
     elsif @result.instance_of? Array
       @return_type = "array"
+    elsif @result == "Record not found"
+      @return_type = "error"
     else
       @return_type = "column"
     end
-    p q
-    p eval(q).class
-    p @return_type
     @correct = @level.valid_answer?(q)
     @type = nil
     if @result.methods.include?(:klass) && @result.klass == Movie
@@ -74,6 +87,9 @@ class LevelsController < ApplicationController
         
       when "array"
         render_this_header = "array_column"
+        
+      when "error"
+        render_this_header = "movie_error"
 
       when "column"
         case class_name

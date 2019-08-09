@@ -23,6 +23,8 @@
                 </td>
               </tr>
             <% end %>
+          <% elsif @return_type == "error" %>
+            <%= render partial: "array_value", locals: {value: @result} %>
           <% else %>
             <%= render partial: 'movie', object: @result, as: :movie %>
           <% end %>
