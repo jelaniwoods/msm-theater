@@ -71,8 +71,9 @@ class LevelsController < ApplicationController
       case type
       when "collection", "record"
         render_this_header = "movie_header"
-
+        
       when "array"
+        render_this_header = "array_column"
 
       when "column"
         case class_name

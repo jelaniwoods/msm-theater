@@ -13,6 +13,16 @@
             <%= render partial: 'movie', collection: @result, as: :movie %>
           <% elsif @return_type == "column" %>
             <%= render partial: "movie_column", object: @result %>
+          <% elsif @return_type == "array" %>
+          <%#= render :partial => 'graph_preview_item', :collection => @available_graphs, :as => :item %>
+            <% @result.each do |result| %>
+              <%#= render partial: "array_value", value: result %>
+              <tr>
+                <td>
+                  <%= result %>
+                </td>
+              </tr>
+            <% end %>
           <% else %>
             <%= render partial: 'movie', object: @result, as: :movie %>
           <% end %>
