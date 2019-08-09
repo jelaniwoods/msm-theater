@@ -14,17 +14,22 @@ class LevelsController < ApplicationController
     @class_name = q.split(".").first
     @column = @matched_data[2]
 
-    # could also determine this from input
-    relation = eval(@class_name).all.class
-    record = eval(@class_name).first.class
-    
+    begin
+      # could also determine this from input
+      relation = eval(@class_name).all.class
+      record = eval(@class_name).first.class
+    rescue Exception
+      relation = Movie.all.class
+      record = Movie
+    end
     @res = session[:query].last["input"]
     begin
       @result = eval(q)
       # something which might raise an exception
     rescue ActiveRecord::RecordNotFound => some_variable
       @result = "Record not found"
-    rescue SomeOtherException => some_other_variable
+    rescue Exception => some_other_variable
+      @result = "Uh oh"
       # code that deals with some other exception
     else
       # code that runs only if *no* exception was raised
@@ -41,7 +46,7 @@ class LevelsController < ApplicationController
       @return_type = "record"
     elsif @result.instance_of? Array
       @return_type = "array"
-    elsif @result == "Record not found"
+    elsif @result == "Record not found" || @result == "Uh oh"
       @return_type = "error"
     else
       @return_type = "column"
