@@ -26,9 +26,7 @@
           <% elsif @return_type == "error" %>
             <%= render partial: "array_value", locals: {value: @result} %>
           <% else %>
-              this is hopefully never called
-              <%= @return_type %>
-            <%#= render partial: 'movie', object: @result, as: :movie %>
+            <%= render partial: "#{@class_name}".downcase, object: @result, as: "#{@class_name.downcase}".to_sym %>
           <% end %>
         </tbody>
       </table>
