@@ -6,11 +6,11 @@
     <div class="table-responsive">
       <table class="table table-striped">
 
-        <%= render @header %>
+        <%= render "#{@class_name.downcase.pluralize}/" + @header %>
 
         <tbody>
           <% if !@type.nil? %>
-            <%= render partial: 'movie', collection: @result, as: :movie %>
+            <%= render partial: "#{@class_name}".downcase, collection: @result, as: "#{@class_name.downcase}".to_sym %>
           <% elsif @return_type == "column" %>
             <%= render partial: "movie_column", object: @result %>
           <% elsif @return_type == "array" %>
@@ -26,7 +26,9 @@
           <% elsif @return_type == "error" %>
             <%= render partial: "array_value", locals: {value: @result} %>
           <% else %>
-            <%= render partial: 'movie', object: @result, as: :movie %>
+              this is hopefully never called
+              <%= @return_type %>
+            <%#= render partial: 'movie', object: @result, as: :movie %>
           <% end %>
         </tbody>
       </table>
