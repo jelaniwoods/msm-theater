@@ -14,6 +14,12 @@ class LevelsController < ApplicationController
     @class_name = q.split(".").first
     @column = @matched_data[2]
 
+    # prevent deletion
+    # https://stackoverflow.com/a/9622553
+    if @matched_data.any?(&"delete".method(:include?)) || @matched_data.any?(&"destroy".method(:include?))
+      q = @class_name + ".all"
+    end
+
     begin
       # could also determine this from input
       relation = eval(@class_name).all.class
@@ -24,15 +30,20 @@ class LevelsController < ApplicationController
     end
     @res = session[:query].last["input"]
     begin
+      p "Begin eval"
       @result = eval(q)
+      p "After eval"
       # something which might raise an exception
     rescue ActiveRecord::RecordNotFound => some_variable
+      p "error in eval"
       @result = "Record not found"
     rescue Exception => some_other_variable
+      p "Any other error in eval"
       @result = "Uh oh"
       # code that deals with some other exception
     else
       # code that runs only if *no* exception was raised
+      p "idk when this would run"
     ensure
       # ensure that this code always runs, no matter what
       # does not change the final value of the block
