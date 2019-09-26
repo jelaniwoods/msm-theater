@@ -121,7 +121,7 @@ class LevelsController < ApplicationController
         render_this_header = "array_column"
         
       when "error"
-        render_this_header = "movie_error"
+        render_this_header = "error"
 
       when "column"
         case class_name
