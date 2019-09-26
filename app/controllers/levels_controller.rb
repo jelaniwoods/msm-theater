@@ -68,6 +68,12 @@ class LevelsController < ApplicationController
     @type = nil
     if @result.methods.include?(:klass) && @result.klass == Movie
       @type = Movie
+    elsif @result.methods.include?(:klass) && @result.klass == Director
+      @type = Director
+    elsif @result.methods.include?(:klass) && @result.klass == Actor
+      @type = Actor
+    elsif @result.methods.include?(:klass) && @result.klass == Role
+      @type = Role
     end
     @header = figure_it_out(@return_type, @class_name, @column)
 
@@ -101,7 +107,15 @@ class LevelsController < ApplicationController
       render_this_header = ""
       case type
       when "collection", "record"
-        render_this_header = "movie_header"
+        case class_name
+        when "Movie"
+          render_this_header = "movie_header"
+        when "Actor"
+          render_this_header = "actor_header"
+        when "Role"
+        when "Director"
+          render_this_header = "director_header"
+        end
         
       when "array"
         render_this_header = "array_column"
