@@ -12,6 +12,9 @@ class LevelsController < ApplicationController
     @matched_data = q.match(pattern)
     @matched_data = @matched_data.to_a.drop 1
     @class_name = q.split(".").first
+    unless ["Movie", "Director", "Actor", "Role"].include? @class_name
+      @class_name = "Movie"
+    end
     @column = @matched_data[2]
 
     # prevent deletion
