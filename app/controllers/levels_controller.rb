@@ -116,6 +116,7 @@ class LevelsController < ApplicationController
         when "Actor"
           render_this_header = "actor_header"
         when "Role"
+          render_this_header = "role_header"
         when "Director"
           render_this_header = "director_header"
         end

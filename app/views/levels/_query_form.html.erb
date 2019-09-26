@@ -1,4 +1,5 @@
-<form class="" action="/levels/<%= level.id %>" method="post">
-  <input type="text" name="input" placeholder="Enter a query">
+<form class="query_form" action="/levels/<%= level.id %>" method="post">
+  <label for="query">Enter a Query</label>
+  <input id="query" type="text" name="input" placeholder="Movie.where({:column => value })">
   <button type="submit" name="button">Submit</button>
 </form>
