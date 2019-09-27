@@ -22,7 +22,7 @@ class LevelsController < ApplicationController
     if @matched_data.reject(&:empty?).any?(&"delete".method(:include?)) || @matched_data.reject(&:empty?).any?(&"destroy".method(:include?))
       p @matched_data
       q = @class_name + ".all"
-      p "you fucked it"
+      # p "you fucked it"
     end
 
     begin
@@ -35,9 +35,7 @@ class LevelsController < ApplicationController
     end
     @res = session[:query].last["input"]
     begin
-      p "Begin eval"
       @result = eval(q)
-      p "After eval"
       # something which might raise an exception
     rescue ActiveRecord::RecordNotFound => some_variable
       p "error in eval"

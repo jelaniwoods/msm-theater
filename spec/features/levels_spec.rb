@@ -69,19 +69,36 @@ describe "Query: Role.all" do
 end
 
 describe "Query: Random Invalid text" do
-  it "should display error page" do
-    pending("something else getting finished")
+  it "should display error: Uh oh" do
+    # expect(page.find("th").text).eql ("Error")
+    visit "/"
+
+    fill_in "Enter a Query", with: "asdfghjkl"
+    click_on "Submit"
+
+    expect(page).to have_selector 'th', text: 'Error'
+    expect(page).to have_selector 'td', text: 'Uh oh'
   end
 end
 
-describe "Query: Record that doesn't exist" do
-  it "should display error page" do
-    pending("something else getting finished")
+describe "Query: Movie.find(0)" do
+  it "should display error: Record not found" do
+    visit "/"
+
+    fill_in "Enter a Query", with: "Movie.find(0)"
+    click_on "Submit"
+
+    expect(page).to have_selector 'td', text: 'Record not found'
+
   end
 end
 
-describe "Query: Attribute doesn't exist for Record" do
-  it "should display error page" do
-    pending("something else getting finished")
-  end
+# describe "Query: Movie.first.banana_nut" do
+#   it "should display error: Attribute doesn't exist for Record" do
+#     pending "something else getting finished"
+#   end
+# end
+
+RSpec.feature "Query: Movie.first.banana_nut", type: :feature do
+  pending "should display error: Attribute doesn't exist for Record"
 end
