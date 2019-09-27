@@ -19,7 +19,8 @@ class LevelsController < ApplicationController
 
     # prevent deletion
     # https://stackoverflow.com/a/9622553
-    if @matched_data.reject(&:empty?).any?(&"delete".method(:include?)) || @matched_data.reject(&:empty?).any?(&"destroy".method(:include?))
+    emptied_matches = @matched_data.reject(&:empty?)
+    if emptied_matches.any?(&"delete".method(:include?)) || emptied_matches.any?(&"destroy".method(:include?))
       p @matched_data
       q = @class_name + ".all"
       # p "you fucked it"
@@ -58,12 +59,17 @@ class LevelsController < ApplicationController
       @return_type = "collection"
     elsif @result.instance_of? record
       @return_type = "record"
+      p "made record"
     elsif @result.instance_of? Array
       @return_type = "array"
-    elsif @result == "Record not found" || @result == "Uh oh"
+    elsif @result == "Record not found" || @result == "Uh oh"  || @result.nil?
       @return_type = "error"
     else
       @return_type = "column"
+      p "=========="
+      p @result
+      p @result.instance_of? record
+      p "=========="
     end
     @correct = @level.valid_answer?(q)
     @type = nil
@@ -78,8 +84,12 @@ class LevelsController < ApplicationController
     end
     @header = figure_it_out(@return_type, @class_name, @column)
 
-
-
+    @header_column = ""
+    unless @level.id + 1 > Level.last.id 
+      @next_level = @level.id + 1
+    else
+      @next_level = "None"
+    end
   end
 
   def store
@@ -128,8 +138,9 @@ class LevelsController < ApplicationController
       when "column"
         case class_name
         when "Movie"
-          render_this_header = "movie_#{column}_header"
+          render_this_header = "column_header"
         end
+        @header_column = column
       end
       return render_this_header
     end

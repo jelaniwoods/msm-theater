@@ -6,7 +6,7 @@
     <div class="table-responsive">
       <table class="table table-striped">
 
-        <%= render "#{@class_name.downcase.pluralize}/" + @header %>
+        <%= render "#{@class_name.downcase.pluralize}/" + @header,  locals: {header: @header_column} %>
 
         <tbody>
           <% if !@type.nil? %>
@@ -34,3 +34,5 @@
   </div>
 </div>
 <%= @matched_data %>
+
+<%= link_to "Next Level", level_path(@next_level) %>
