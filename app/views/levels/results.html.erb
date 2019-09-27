@@ -5,14 +5,16 @@
   <div class="col-md-12">
     <div class="table-responsive">
       <table class="table table-striped">
-
-        <%= render "#{@class_name.downcase.pluralize}/" + @header,  locals: {header: @header_column} %>
+        - <%= @header_column %>
+        - <%= @column %>
+        - <%= @matched_data %>
+        <%= render "#{@class_name.downcase.pluralize}/" + @header, value: @header_column %>
 
         <tbody>
           <% if !@type.nil? %>
             <%= render partial: "#{@class_name}".downcase, collection: @result, as: "#{@class_name.downcase}".to_sym %>
           <% elsif @return_type == "column" %>
-            <%= render partial: "movie_column", object: @result %>
+            <%= render partial: "#{@class_name.downcase.pluralize}/#{@class_name.downcase}_column", object: @result %>
           <% elsif @return_type == "array" %>
           <%#= render :partial => 'graph_preview_item', :collection => @available_graphs, :as => :item %>
             <% @result.each do |result| %>

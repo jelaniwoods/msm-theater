@@ -83,8 +83,8 @@ class LevelsController < ApplicationController
       @type = Role
     end
     @header = figure_it_out(@return_type, @class_name, @column)
-
-    @header_column = ""
+    
+    @header_column = @column
     unless @level.id + 1 > Level.last.id 
       @next_level = @level.id + 1
     else
@@ -136,12 +136,36 @@ class LevelsController < ApplicationController
         render_this_header = "error"
 
       when "column"
+        
         case class_name
         when "Movie"
           render_this_header = "column_header"
         end
-        @header_column = column
       end
       return render_this_header
+    end
+
+    def find_column(matched_data)
+      class_name = matched_data.first
+      emptied_matches = matched_data.reject(&:empty?).reverse
+
+      column = 
+      case class_name
+      
+        # idk trying to find what exact column is being called so i know what header to use
+      when Movie.to_s
+        columns = Movie.columns.map(&:name)
+        emptied_matches.each do |segment|
+          if columnsany?(&segment.method(:include?))
+          end
+        end
+      when Director.to_s
+        columns = Director.columns.map(&:name)
+      when Actor.to_s
+        columns = Actor.columns.map(&:name)
+      when Role.to_s
+        columns = Role.columns.map(&:name)
+      end
+    
     end
 end
