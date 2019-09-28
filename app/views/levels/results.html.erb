@@ -2,6 +2,13 @@
 <%= @correct %>
 <hr>
 <div class="row">
+  <div class="col-12">
+    <div class="h3 text-center">
+      Your Query returned a <%= @return_type.capitalize %>
+    </div>
+  </div>
+</div>
+<div class="row">
   <div class="col-md-12">
     <div class="table-responsive">
       <table class="table table-striped">
@@ -14,7 +21,7 @@
           <% if !@type.nil? %>
             <%= render partial: "#{@class_name}".downcase, collection: @result, as: "#{@class_name.downcase}".to_sym %>
           <% elsif @return_type == "column" %>
-            <%= render partial: "#{@class_name.downcase.pluralize}/#{@class_name.downcase}_column", object: @result %>
+            <%= render partial: "column", object: @result %>
           <% elsif @return_type == "array" %>
           <%#= render :partial => 'graph_preview_item', :collection => @available_graphs, :as => :item %>
             <% @result.each do |result| %>
