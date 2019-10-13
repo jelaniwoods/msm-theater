@@ -2,6 +2,11 @@
 <%= @correct %>
 <hr>
 <div class="row">
+  <div class="col-md-12">
+    <%= render object: @level, partial: "card", as: :level %>
+  </div>
+</div>
+<div class="row">
   <div class="col-12">
     <div class="h3 text-center">
       Your Query returned a <%= @return_type.capitalize %>

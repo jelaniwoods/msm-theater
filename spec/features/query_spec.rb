@@ -2,6 +2,7 @@ require 'rails_helper'
 
 Rails.application.load_seed
 
+# Return Type: Record
 describe "Query: Movie.find(1)" do
   it "lists one Movie record with all columns" do
     visit "/"
@@ -94,6 +95,11 @@ describe "Query: Role.find(1)" do
   end
 end
 
+# Return Type: Collection
+# Return Type: Column
+# Return Type: Array
+# Return Type: Error
+
 feature "Query:", type: :feature do
 
   scenario "Display Movie id" do
@@ -155,11 +161,42 @@ feature "Query:", type: :feature do
     expect(page).to have_selector 'td', text: "The Shawshank Redemption"
   end
 
-  pending "Display Director id"
+  scenario "Display Director id" do
+    visit "/"
+    
+    fill_in "Enter a Query", with: "Director.first.id"
+    click_on "Submit"
+    
+    expect(page).to have_selector 'td', text: "1"
+  end
 
-  pending "Display Director name"
-  pending "Display Director dob"
-  pending "Display Director bio"
+  scenario "Display Director name" do
+    visit "/"
+    
+    fill_in "Enter a Query", with: "Director.first.name"
+    click_on "Submit"
+    
+    expect(page).to have_selector 'td', text: "Frank Darabont"
+  end
+
+  scenario "Display Director dob" do
+    visit "/"
+    
+    fill_in "Enter a Query", with: "Director.first.dob"
+    click_on "Submit"
+    
+    expect(page).to have_selector 'td', text: Date.parse("January 28, 1959")
+  end
+
+  scenario "Display Director bio" do
+    visit "/"
+    
+    fill_in "Enter a Query", with: "Director.first.bio"
+    click_on "Submit"
+    
+    expect(page).to have_selector 'td', text: "Born and Raised"
+  end
+
 
   pending "Display Actor id"
   pending "Display Actor name"

@@ -77,7 +77,7 @@ Movie.import(movies, {:validate => false})
 Director.delete_all
 
 directors = [
-  {id: 1, bio: "", dob: Date.parse("January 28, 1959"), name: "Frank Darabont"},
+  {id: 1, bio: "Born and Raised", dob: Date.parse("January 28, 1959"), name: "Frank Darabont"},
   {id: 2, bio: "", dob: Date.parse("April 7, 1939"), name: "Francis Ford Coppola"},
   {id: 5, bio: "", dob: Date.parse("July 30, 1970"), name: "Christopher Nolan"},
   {id: 17, bio: "", dob: nil, name: "Katia Lund"},
