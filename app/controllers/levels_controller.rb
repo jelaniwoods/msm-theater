@@ -8,7 +8,8 @@ class LevelsController < ApplicationController
   def results
     # result = eval(@query["input"])
     q = session[:query].last["input"].gsub(" ", "")
-    pattern = /([A-Z][a-z]*).([a-z]*_?[a-z]*)\(?{?(:?[a-z]*):?(=?>?)(\w*)}?\)?\.?([a-z]*)\(?(\d?)\)?/
+    pattern = /([A-Z][a-z]*)\.([a-z]*_?[a-z]*)\(?{?(:?[a-z]*_?[a-z]*):?(=?>?)(\w*)}?\)?\.?([a-z]*)\(?(\d?)\)?/
+    # pattern = /([A-Z][a-z]*).([a-z]*_?[a-z]*)\(?{?(:?[a-z]*):?(=?>?)(\w*)}?\)?\.?([a-z]*)\(?(\d?)\)?/
     @matched_data = q.match(pattern)
     @matched_data = @matched_data.to_a.drop 1
     @class_name = q.split(".").first

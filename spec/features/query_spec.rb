@@ -95,7 +95,69 @@ describe "Query: Role.find(1)" do
   end
 end
 
+
 # Return Type: Collection
+describe "Query: Movie.all" do
+  it "lists all Movie records with all columns" do
+    visit "/"
+    
+    fill_in "Enter a Query", with: "Movie.all"
+    click_on "Submit"
+
+    movies = Movie.all
+    
+    within "tbody" do
+      expect(page).to have_css "tr", count: movies.count
+    end
+  end
+end
+
+describe "Query: Role.all" do
+  it "lists all Role records with all columns" do
+    visit "/"
+    
+    fill_in "Enter a Query", with: "Role.all"
+    click_on "Submit"
+
+    roles = Role.all
+    
+    within "tbody" do
+      expect(page).to have_css "tr", count: roles.count
+    end
+    expect(page).to have_content "Collection"
+  end
+end
+
+describe "Query: Director.all" do
+  it "lists all Director records with all columns" do
+    visit "/"
+    
+    fill_in "Enter a Query", with: "Director.all"
+    click_on "Submit"
+
+    directors = Director.all
+    
+    within "tbody" do
+      expect(page).to have_css "tr", count: directors.count
+    end
+  end
+end
+
+describe "Query: Actor.all" do
+  it "lists all Actor records with all columns" do
+    visit "/"
+    
+    fill_in "Enter a Query", with: "Actor.all"
+    click_on "Submit"
+
+    actors = Actor.all
+    
+    within "tbody" do
+      expect(page).to have_css "tr", count: actors.count
+    end
+  end
+end
+
 # Return Type: Column
 # Return Type: Array
 # Return Type: Error

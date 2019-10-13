@@ -28,9 +28,7 @@
           <% elsif @return_type == "column" %>
             <%= render partial: "column", object: @result %>
           <% elsif @return_type == "array" %>
-          <%#= render :partial => 'graph_preview_item', :collection => @available_graphs, :as => :item %>
             <% @result.each do |result| %>
-              <%#= render partial: "array_value", value: result %>
               <tr>
                 <td>
                   <%= result %>
@@ -49,5 +47,5 @@
 </div>
 
 <% if @correct %>
-  <%= link_to @correct, "Next Level", level_path(@next_level) %>
+  <%= link_to "Next Level", level_path(@next_level) %>
 <% end %>
