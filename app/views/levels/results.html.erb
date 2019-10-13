@@ -47,6 +47,7 @@
     </div>
   </div>
 </div>
-<%= @matched_data %>
 
-<%= link_to "Next Level", level_path(@next_level) %>
+<% if @correct %>
+  <%= link_to @correct, "Next Level", level_path(@next_level) %>
+<% end %>
