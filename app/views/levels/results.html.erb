@@ -1,6 +1,3 @@
-<%= @res %>
-<%= @correct %>
-<hr>
 <div class="row">
   <div class="col-md-12">
     <%= render object: @level, partial: "card", as: :level %>
@@ -17,9 +14,6 @@
   <div class="col-md-12">
     <div class="table-responsive">
       <table class="table table-striped">
-        - <%= @header_column %>
-        - <%= @column %>
-        - <%= @matched_data %>
         <%= render "#{@class_name.downcase.pluralize}/" + @header, value: @header_column %>
 
         <tbody>
