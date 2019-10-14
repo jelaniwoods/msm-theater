@@ -256,7 +256,7 @@ feature "Query:", type: :feature do
     fill_in "Enter a Query", with: "Director.first.bio"
     click_on "Submit"
     
-    expect(page).to have_selector 'td', text: "Born and Raised"
+    expect(page).to have_selector 'td', text: "Frank Darabont was born"
   end
 
 

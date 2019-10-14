@@ -46,8 +46,8 @@ answers = [
   {content: "Movie.find_by(id:6)", level_id: level_1.id },
   {content: "Movie.find_by(:id=>6)", level_id: level_1.id },
   {content: "Movie.find_by({:id=>6})", level_id: level_1.id },
-  {content: "Movie.first", level_id: level_1.id },
-  {content: "Movie.all.first", level_id: level_1.id },
+  {content: "Movie.all[3]", level_id: level_1.id },
+  {content: "Movie.all.at(3)", level_id: level_1.id },
   
   {content: "Director.find(1)", level_id: level_2.id },
   {content: "Director.find_by(id:1)", level_id: level_2.id },
@@ -113,7 +113,7 @@ Movie.import(movies, {:validate => false})
 Director.delete_all
 
 directors = [
-  {id: 1, bio: "Born and Raised", dob: Date.parse("January 28, 1959"), name: "Frank Darabont"},
+  {id: 1, bio: "Three-time Oscar nominee Frank Darabont was born in a refugee camp in 1959 in Montbeliard, France, the son of Hungarian parents who had fled Budapest during the failed 1956 Hungarian revolution. Brought to America as an infant, he settled with his family in Los Angeles and attended Hollywood High School. His first job in movies was as a production assistant on the 1981 low-budget film, Hell Night (1981), starring Linda Blair. He spent the next six years working in the art department as a set dresser and in set construction while struggling to establish himself as a writer. His first produced writing credit (shared) was on the 1987 film, A Nightmare on Elm Street 3: Dream Warriors (1987), directed by Chuck Russell. Darabont is one of only six filmmakers in history with the unique distinction of having his first two feature films receive nominations for the Best Picture Academy Award: 1994's The Shawshank Redemption (1994) (with a total of seven nominations) and 1999's The Green Mile (1999) (four nominations). Darabont himself collected Oscar nominations for Best Adapted Screenplay for each film (both based on works by Stephen King), as well as nominations for both films from the Director's Guild of America, and a nomination from the Writers Guild of America for The Shawshank Redemption (1994). He won the Humanitas Prize, the PEN Center USA West Award, and the Scriptor Award for his screenplay of \"The Shawshank Redemption\". For \"The Green Mile\", he won the Broadcast Film Critics prize for his screenplay adaptation, and two People's Choice Awards in the Best Dramatic Film and Best Picture categories. His most recent feature as director, The Majestic (2001), starring Jim Carrey, was released in December 2001. His next film as director will be an adaptation of Ray Bradbury's classic science fiction novel, Fahrenheit 451 (2007), which Darabont is currently writing for Castle Rock and Icon Productions. He is currently executive-producing the thriller, Collateral (2004), for DreamWorks, with Michael Mann directing and Tom Cruise starring. Future produced-by projects include \"Way of the Rat\" at DreamWorks with Chuck Russell adapting and directing the CrossGen comic book series and \"Back Roads\", a Tawni O'Dell novel, also at DreamWorks, with Todd Field attached to direct. Darabont and his production company, \"Darkwoods Productions\", have an overall deal with Paramount Pictures.", dob: Date.parse("January 28, 1959"), name: "Frank Darabont"},
   {id: 2, bio: "", dob: Date.parse("April 7, 1939"), name: "Francis Ford Coppola"},
   {id: 5, bio: "", dob: Date.parse("July 30, 1970"), name: "Christopher Nolan"},
   {id: 17, bio: "", dob: nil, name: "Katia Lund"},
