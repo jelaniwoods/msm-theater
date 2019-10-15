@@ -87,11 +87,16 @@ answers = [
   {content: "Actor.where({id:Role.where({:movie_id=>1}).pluck(:actor_id)}).count", level_id: level_5.id },
   {content: "Actor.where({id:Role.where(:movie_id=>1).pluck(:actor_id)}).count", level_id: level_5.id },
 
-  {content: "Movie.where(id:1)", level_id: level_6.id },
-  {content: "Movie.where({id:1})", level_id: level_6.id },
-  {content: "Movie.where(id:[1])", level_id: level_6.id },
-  {content: "Movie.where(:id=>1)", level_id: level_6.id },
-  {content: "Movie.where({:id=>1})", level_id: level_6.id },
+  {content: "Movie.where(id:[1,6])", level_id: level_6.id },
+  {content: "Movie.where({id:[1,6]})", level_id: level_6.id },
+  {content: "Movie.where(id:[1,6])", level_id: level_6.id },
+  {content: "Movie.where(:id=>[1,6])", level_id: level_6.id },
+  {content: "Movie.where({:id=>[1,6]})", level_id: level_6.id },
+  {content: "Movie.where(id:Role.where(actor_id:2).pluck(:movie_id))", level_id: level_6.id },
+  {content: "Movie.where(:id=>Role.where(actor_id:2).pluck(:movie_id))", level_id: level_6.id },
+  {content: "Movie.where({:id=>Role.where(actor_id:2).pluck(:movie_id)})", level_id: level_6.id },
+  {content: "Movie.where({:id=>Role.where({actor_id:2}).pluck(:movie_id)})", level_id: level_6.id },
+  {content: "Movie.where({:id=>Role.where({:actor_id=>2}).pluck(:movie_id)})", level_id: level_6.id },
   # {content: "", level_id: level_1.id },
 ]
 
