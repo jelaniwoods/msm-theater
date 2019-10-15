@@ -20,9 +20,18 @@ class LevelsController < ApplicationController
 
     # prevent deletion
     # https://stackoverflow.com/a/9622553
-    emptied_matches = @matched_data.reject(&:empty?)
-    if emptied_matches.any?(&"delete".method(:include?)) || emptied_matches.any?(&"destroy".method(:include?)) || emptied_matches.any?(&"destroy_all".method(:include?)) || emptied_matches.any?(&"delete_all".method(:include?))
-      p @matched_data
+    # emptied_matches = @matched_data.reject(&:empty?)
+    emptied_matches = q.split(".").reject(&:empty?)
+
+    allow_only = ["where", "find", "find_by", "all"]
+    exclude_methods = ["delete", "delete_all", "destroy", "destroy_all", "update", "update_all", "save"]
+    p "=============="
+    p q.split(".")
+    p @matched_data
+    p emptied_matches
+    p "=============="
+    if emptied_matches.any?(&"delete".method(:include?)) || emptied_matches.any?(&"destroy".method(:include?)) || emptied_matches.any?(&"destroy_all".method(:include?)) || emptied_matches.any?(&"delete_all".method(:include?)) || emptied_matches.any?(&"update".method(:include?)) || emptied_matches.any?(&"update_all".method(:include?)) || emptied_matches.any?(&"save".method(:include?))  
+      p @matched_data 
       q = @class_name + ".all"
       # p "you fucked it"
     end
