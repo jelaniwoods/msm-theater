@@ -21,7 +21,7 @@ class LevelsController < ApplicationController
     # prevent deletion
     # https://stackoverflow.com/a/9622553
     emptied_matches = @matched_data.reject(&:empty?)
-    if emptied_matches.any?(&"delete".method(:include?)) || emptied_matches.any?(&"destroy".method(:include?))
+    if emptied_matches.any?(&"delete".method(:include?)) || emptied_matches.any?(&"destroy".method(:include?)) || emptied_matches.any?(&"destroy_all".method(:include?)) || emptied_matches.any?(&"delete_all".method(:include?))
       p @matched_data
       q = @class_name + ".all"
       # p "you fucked it"
