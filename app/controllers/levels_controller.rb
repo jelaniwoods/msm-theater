@@ -3,11 +3,26 @@ class LevelsController < ApplicationController
 
   def show
     session[:query] = []
+    session[:step] = []
   end
 
   def results
     # result = eval(@query["input"])
+    
+    step_query_exists? = !params[:step].blank?
+
+    if step_query_exists?
+      
+    
+    end
+
     @actual_query = session[:query].last["input"].strip
+    query_to_eval = @actual_query.gsub("\r\n", ";")
+    p "===============////////="
+    p session[:query].last["input"]
+    p query_to_eval
+    p "=============///////////////////==="
+
     q = session[:query].last["input"].strip.gsub(" ", "")
     pattern = /([A-Z][a-z]*)\.([a-z]*_?[a-z]*)\(?{?(:?[a-z]*_?[a-z]*):?(=?>?)(\w*)}?\)?\.?([a-z]*)\(?(\d?)\)?/
     # pattern = /([A-Z][a-z]*).([a-z]*_?[a-z]*)\(?{?(:?[a-z]*):?(=?>?)(\w*)}?\)?\.?([a-z]*)\(?(\d?)\)?/
@@ -47,7 +62,7 @@ class LevelsController < ApplicationController
     end
     @res = session[:query].last["input"]
     begin
-      @result = eval(@actual_query)
+      @result = eval(query_to_eval)
       # something which might raise an exception
     rescue ActiveRecord::RecordNotFound => some_variable
       p "error in eval"
@@ -68,7 +83,7 @@ class LevelsController < ApplicationController
 
 
     if @result.instance_of?(relation) || @result.instance_of?(ActiveRecord::QueryMethods::WhereChain)
-      @result = eval(@actual_query)
+      @result = eval(query_to_eval)
       @return_type = "collection"
     elsif @result.instance_of? record
       @return_type = "record"
@@ -111,6 +126,7 @@ class LevelsController < ApplicationController
     @query = {input: params.fetch(:input), level_id: @level.id }
     # @query = {input: params.fetch(:input).gsub(/\s+/, ""), level_id: @level.id }
     session[:query].push @query
+    session[:step_query].push @query
     redirect_to "/levels/#{@level.id}/results", notice: "yup"
   end
 
