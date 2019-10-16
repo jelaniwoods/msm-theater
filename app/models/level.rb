@@ -15,4 +15,9 @@ class Level < ApplicationRecord
   def valid_answer?(query)
     answers.pluck(:content).include?(query)
   end
+
+  def answer_should_be
+    rand_answer = answers.pluck(:content).shuffle.first
+    correct_result = eval(rand_answer)
+  end
 end

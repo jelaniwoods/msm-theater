@@ -7,7 +7,8 @@ class LevelsController < ApplicationController
 
   def results
     # result = eval(@query["input"])
-    q = session[:query].last["input"].gsub(" ", "")
+    @actual_query = session[:query].last["input"].strip
+    q = session[:query].last["input"].strip.gsub(" ", "")
     pattern = /([A-Z][a-z]*)\.([a-z]*_?[a-z]*)\(?{?(:?[a-z]*_?[a-z]*):?(=?>?)(\w*)}?\)?\.?([a-z]*)\(?(\d?)\)?/
     # pattern = /([A-Z][a-z]*).([a-z]*_?[a-z]*)\(?{?(:?[a-z]*):?(=?>?)(\w*)}?\)?\.?([a-z]*)\(?(\d?)\)?/
     @matched_data = q.match(pattern)
@@ -46,7 +47,7 @@ class LevelsController < ApplicationController
     end
     @res = session[:query].last["input"]
     begin
-      @result = eval(q)
+      @result = eval(@actual_query)
       # something which might raise an exception
     rescue ActiveRecord::RecordNotFound => some_variable
       p "error in eval"
@@ -57,6 +58,8 @@ class LevelsController < ApplicationController
       # code that deals with some other exception
     else
       # code that runs only if *no* exception was raised
+      p @actual_query
+      p @result
       p "idk when this would run"
     ensure
       # ensure that this code always runs, no matter what
@@ -65,7 +68,7 @@ class LevelsController < ApplicationController
 
 
     if @result.instance_of?(relation) || @result.instance_of?(ActiveRecord::QueryMethods::WhereChain)
-      @result = eval(q.gsub("()", "({})"))
+      @result = eval(@actual_query)
       @return_type = "collection"
     elsif @result.instance_of? record
       @return_type = "record"
@@ -105,7 +108,8 @@ class LevelsController < ApplicationController
   end
 
   def store
-    @query = {input: params.fetch(:input).gsub(/\s+/, ""), level_id: @level.id }
+    @query = {input: params.fetch(:input), level_id: @level.id }
+    # @query = {input: params.fetch(:input).gsub(/\s+/, ""), level_id: @level.id }
     session[:query].push @query
     redirect_to "/levels/#{@level.id}/results", notice: "yup"
   end

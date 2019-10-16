@@ -15,12 +15,16 @@ end
 
 
 levels = [
-  {number: 1, directions: "What is the Movie record with an id of 6?"},
-  {number: 2, directions: "Who directed Shawshank Redemption?"},
+  {number: 1, directions: "Return the entire record from the movies table with the ID of 6"},
+  # {number: 1, directions: "What is the Movie record with an id of 6?"},
+  # {number: 2, directions: "Who directed The Shawshank Redemption?"},
+  {number: 2, directions: "Return the record of the Director who directed The Shawshank Redemption."},
   {number: 3, directions: "How many movies has Francis Ford Coppola directed?"},
   {number: 4, directions: "What are the names of the movies Coppola directed?"},
   {number: 5, directions: "How many actors were in the Shawshank Redemption?"},
-  {number: 6, directions: "What films has Morgan Freeman been in?"},
+  # {number: 6, directions: "What films has Morgan Freeman been in?"},
+  {number: 6, directions: "Return all the movie records that has Morgan Freeman been in?"},
+
 ]
 
 Level.import(levels, {:validate => false})
