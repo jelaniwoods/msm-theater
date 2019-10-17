@@ -70,7 +70,7 @@ class LevelsController < ApplicationController
       @result = "Record not found"
     rescue Exception => some_other_variable
       p "Any other error in eval"
-      @result = "Uh oh"
+      @result = some_other_variable.to_s
       # code that deals with some other exception
     else
       # code that runs only if *no* exception was raised
