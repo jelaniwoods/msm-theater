@@ -3,16 +3,17 @@ class LevelsController < ApplicationController
 
   def show
     session[:query] = []
-    session[:step] = []
+    session[:cleared] = false
+    session[:step_query] = []
   end
 
   def results
     # result = eval(@query["input"])
     
-    step_query_exists? = !params[:step].blank?
+    step_query_exists = params[:step].present?
 
-    if step_query_exists?
-      
+    if step_query_exists
+      p "CMON LES STEP"
     
     end
 
@@ -126,8 +127,21 @@ class LevelsController < ApplicationController
     @query = {input: params.fetch(:input), level_id: @level.id }
     # @query = {input: params.fetch(:input).gsub(/\s+/, ""), level_id: @level.id }
     session[:query].push @query
-    session[:step_query].push @query
+    if params[:step].present?
+      session[:step_query].push params[:input]
+    end
     redirect_to "/levels/#{@level.id}/results", notice: "yup"
+  end
+
+  def remove_step
+    index = params[:index].to_i
+    sess = session[:step_query]
+    # session[:step_query] = sess - [sess[index]]
+    sess.delete_at index
+    p sess
+    p "-----"
+    p session[:step_query]
+    redirect_back(fallback_location:"/")
   end
 
   private

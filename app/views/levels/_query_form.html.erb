@@ -1,6 +1,8 @@
 <form class="query_form" action="/levels/<%= level.id %>" method="post">
-  <label for="query">Enter a Query</label>
-  <input id="query" class="form-control" type="text" name="input" value="<%= !@res.blank? ? @res: "" %>" placeholder="Movie.where({:column => value })">
+  <div class="form-group">
+    <label for="query">Enter a Query</label>
+    <input id="query" class="form-control" type="text" name="input" value="<%= !@res.blank? ? @res: "" %>" placeholder="Movie.where({:column => value })">
+  </div>
   <button type="submit" name="step" value="step">Step</button>
   <button type="submit" name="execute">Execute</button>
 </form>

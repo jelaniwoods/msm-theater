@@ -4,11 +4,19 @@
   </h2>
 
   <div class="card-body">
-    <%= level.directions %>
+    <div>
+      <%= level.directions %>
+    </div>
+    <ul class="list-group p-4">
+    <% session[:step_query].each_with_index do |step, index| %>
+      <li class="list-group-item"><span><a href="/remove_step/<%= index %>">(x)</a></span><%= step %></li>
+    <% end %>
+      <div class="">
+    </ul>
 
-    <div class="">
+    <div class="text-left">
       <%= render "query_form", query: @query, level: @level %>
-
+    </div>
     </div>
 
   </div>
