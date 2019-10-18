@@ -63,7 +63,12 @@ class LevelsController < ApplicationController
     end
     @res = session[:query].last["input"]
     begin
-      @result = eval(query_to_eval)
+      if step_query_exists
+        p "Running steps"
+        @result = execute_steps
+      else
+        @result = eval(query_to_eval)
+      end
       # something which might raise an exception
     rescue ActiveRecord::RecordNotFound => some_variable
       p "error in eval"
@@ -84,7 +89,13 @@ class LevelsController < ApplicationController
 
 
     if @result.instance_of?(relation) || @result.instance_of?(ActiveRecord::QueryMethods::WhereChain)
-      @result = eval(query_to_eval)
+      # @result = eval(query_to_eval)
+      if step_query_exists
+        p "Running steps"
+        @result = execute_steps
+      else
+        @result = eval(query_to_eval)
+      end
       @return_type = "collection"
     elsif @result.instance_of? record
       @return_type = "record"
@@ -127,10 +138,12 @@ class LevelsController < ApplicationController
     @query = {input: params.fetch(:input), level_id: @level.id }
     # @query = {input: params.fetch(:input).gsub(/\s+/, ""), level_id: @level.id }
     session[:query].push @query
+    status = "normal"
     if params[:step].present?
       session[:step_query].push params[:input]
+      status = "step"
     end
-    redirect_to "/levels/#{@level.id}/results", notice: "yup"
+    redirect_to level_results_path(id: @level.id, step: status)
   end
 
   def remove_step
@@ -159,6 +172,12 @@ class LevelsController < ApplicationController
       params.fetch(:level, {})
     end
 
+    def execute_steps
+      combined_steps = session[:step_query].join(";")
+      p "COMBINED"
+      p combined_steps
+      eval combined_steps
+    end
 
     def figure_it_out(type, class_name, column)
       render_this_header = ""
