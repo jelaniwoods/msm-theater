@@ -7,13 +7,12 @@ class LevelsController < ApplicationController
     session[:step_query] = []
   end
 
-  def results
-    # result = eval(@query["input"])
-    
+  def results    
     step_query_exists = session[:query_type] == "step"
 
+    p session[:query_type]
     if step_query_exists
-      p "CMON LES STEP"
+      p "THERE IS A STEP"
       p params[:step]
     
     end
@@ -157,9 +156,10 @@ class LevelsController < ApplicationController
     p "===----==="
     p session[:query]
     p "===----==="
+    p "finding"
+    find_and_remove_query_from_history(sess[index])
     sess.delete_at index
     # Remove query from list of queries
-    find_and_remove_query_from_history(sess[index])
     p sess
     p "-----"
     p session[:step_query]
@@ -170,12 +170,23 @@ class LevelsController < ApplicationController
 
     def find_and_remove_query_from_history(query)
       history =  session[:query].reverse
+      p history
+      p "---"
+      p query
       history.each_with_index do |old_query, index|
+        p old_query["input"]
+        p "[=========]"
         if old_query["input"] == query
           p "Delete this one"
-          p old_query["input"]
-          p "out of"
+          history.delete_at(index)
+          session[:step_query].reverse.delete_at(index)
+          p "====="
           p history
+          if history.empty?
+            p "No more step"
+            session[:query_type] = "normal"
+          end
+          return
         end
       end
     end
