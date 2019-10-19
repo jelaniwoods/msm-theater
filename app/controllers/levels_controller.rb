@@ -10,10 +10,11 @@ class LevelsController < ApplicationController
   def results
     # result = eval(@query["input"])
     
-    step_query_exists = params[:step].present?
+    step_query_exists = session[:query_type] == "step"
 
     if step_query_exists
       p "CMON LES STEP"
+      p params[:step]
     
     end
 
@@ -94,6 +95,7 @@ class LevelsController < ApplicationController
         p "Running steps"
         @result = execute_steps
       else
+        p query_to_eval
         @result = eval(query_to_eval)
       end
       @return_type = "collection"
@@ -137,20 +139,27 @@ class LevelsController < ApplicationController
   def store
     @query = {input: params.fetch(:input), level_id: @level.id }
     # @query = {input: params.fetch(:input).gsub(/\s+/, ""), level_id: @level.id }
+
     session[:query].push @query
     status = "normal"
     if params[:step].present?
       session[:step_query].push params[:input]
       status = "step"
     end
-    redirect_to level_results_path(id: @level.id, step: status)
+    session[:query_type] = status
+    redirect_to level_results_path(id: @level.id)
   end
 
   def remove_step
     index = params[:index].to_i
     sess = session[:step_query]
     # session[:step_query] = sess - [sess[index]]
+    p "===----==="
+    p session[:query]
+    p "===----==="
     sess.delete_at index
+    # Remove query from list of queries
+    find_and_remove_query_from_history(sess[index])
     p sess
     p "-----"
     p session[:step_query]
@@ -158,6 +167,19 @@ class LevelsController < ApplicationController
   end
 
   private
+
+    def find_and_remove_query_from_history(query)
+      history =  session[:query].reverse
+      history.each_with_index do |old_query, index|
+        if old_query["input"] == query
+          p "Delete this one"
+          p old_query["input"]
+          p "out of"
+          p history
+        end
+      end
+    end
+
     # Use callbacks to share common setup or constraints between actions.
     def set_level
       if params[:id].nil?
