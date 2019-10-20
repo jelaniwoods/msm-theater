@@ -24,7 +24,7 @@ class LevelsController < ApplicationController
 
     allow_only = ["where", "find", "find_by", "all"]
     exclude_methods = ["delete", "delete_all", "destroy", "destroy_all", "update", "update_all", "save"]
-    
+
     p "=============="
     p last_input.split(".")
     p @matched_data
@@ -64,7 +64,7 @@ class LevelsController < ApplicationController
       # does not change the final value of the block
     end
 
-    @return_type = get_return_type(@result, relation, record)
+    @return_type = get_return_type(@result, relation, record, query_to_eval)
 
     @correct = @level.valid_answer?(last_input)
     @type = get_type(@result)
@@ -104,6 +104,7 @@ class LevelsController < ApplicationController
     p sess
     p "-----"
     p session[:step_query]
+    p session[:query]
     redirect_back(fallback_location:"/")
   end
 
@@ -120,11 +121,13 @@ class LevelsController < ApplicationController
         if old_query["input"] == query
           p "Delete this one"
           history.delete_at(index)
+          session[:query] = history.reverse
           session[:step_query].reverse.delete_at(index)
           p "====="
           p history
           if history.empty?
             p "No more step"
+            session[:query] =  [{input: "Movie.all"} ]
             session[:query_type] = "normal"
           end
           return
@@ -132,7 +135,7 @@ class LevelsController < ApplicationController
       end
     end
 
-    def get_return_type(result, relation, record)
+    def get_return_type(result, relation, record, query_to_eval)
       if result.instance_of?(relation) || result.instance_of?(ActiveRecord::QueryMethods::WhereChain)
         # result = eval(query_to_eval)
         if step_query_exists?
