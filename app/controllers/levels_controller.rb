@@ -8,62 +8,42 @@ class LevelsController < ApplicationController
   end
 
   def results    
-    step_query_exists = session[:query_type] == "step"
-
-    p session[:query_type]
-    if step_query_exists
-      p "THERE IS A STEP"
-      p params[:step]
-    
-    end
 
     @actual_query = session[:query].last["input"].strip
     query_to_eval = @actual_query.gsub("\r\n", ";")
-    p "===============////////="
-    p session[:query].last["input"]
-    p query_to_eval
-    p "=============///////////////////==="
+    last_input = @actual_query.gsub(" ", "")
+    @matched_data = get_matched_data(last_input)
 
-    q = session[:query].last["input"].strip.gsub(" ", "")
-    pattern = /([A-Z][a-z]*)\.([a-z]*_?[a-z]*)\(?{?(:?[a-z]*_?[a-z]*):?(=?>?)(\w*)}?\)?\.?([a-z]*)\(?(\d?)\)?/
-    # pattern = /([A-Z][a-z]*).([a-z]*_?[a-z]*)\(?{?(:?[a-z]*):?(=?>?)(\w*)}?\)?\.?([a-z]*)\(?(\d?)\)?/
-    @matched_data = q.match(pattern)
-    @matched_data = @matched_data.to_a.drop 1
-    @class_name = q.split(".").first
-    unless ["Movie", "Director", "Actor", "Role"].include? @class_name
-      @class_name = "Movie"
-    end
+    @class_name = find_class_name(last_input.split(".").first)
     @column = @matched_data[2]
 
     # prevent deletion
     # https://stackoverflow.com/a/9622553
     # emptied_matches = @matched_data.reject(&:empty?)
-    emptied_matches = q.split(".").reject(&:empty?)
+    emptied_matches = last_input.split(".").reject(&:empty?)
 
     allow_only = ["where", "find", "find_by", "all"]
     exclude_methods = ["delete", "delete_all", "destroy", "destroy_all", "update", "update_all", "save"]
+    
     p "=============="
-    p q.split(".")
+    p last_input.split(".")
     p @matched_data
     p emptied_matches
     p "=============="
-    if emptied_matches.any?(&"delete".method(:include?)) || emptied_matches.any?(&"destroy".method(:include?)) || emptied_matches.any?(&"destroy_all".method(:include?)) || emptied_matches.any?(&"delete_all".method(:include?)) || emptied_matches.any?(&"update".method(:include?)) || emptied_matches.any?(&"update_all".method(:include?)) || emptied_matches.any?(&"save".method(:include?))  
+
+    if emptied_matches.any?(&"delete".method(:include?)) || emptied_matches.any?(&"destroy".method(:include?)) || emptied_matches.any?(&"destroy_all".method(:include?)) || emptied_matches.any?(&"delete_all".method(:include?)) || emptied_matches.any?(&"update".method(:include?)) || emptied_matches.any?(&"update_all".method(:include?)) || emptied_matches.any?(&"save".method(:include?)) || emptied_matches.any?(&"create".method(:include?)) || emptied_matches.any?(&"new".method(:include?))  
       p @matched_data 
-      q = @class_name + ".all"
-      # p "you fucked it"
+      last_input = @class_name + ".all"
+      p "no deleting, destroying, saving, updating, creating"
     end
 
+
+    relation, record = get_relation(@class_name), get_record(@class_name)
+
+    @res = @actual_query # session[:query].last["input"]
+
     begin
-      # could also determine this from input
-      relation = eval(@class_name).all.class
-      record = eval(@class_name).first.class
-    rescue Exception
-      relation = Movie.all.class
-      record = Movie
-    end
-    @res = session[:query].last["input"]
-    begin
-      if step_query_exists
+      if step_query_exists?
         p "Running steps"
         @result = execute_steps
       else
@@ -79,60 +59,21 @@ class LevelsController < ApplicationController
       # code that deals with some other exception
     else
       # code that runs only if *no* exception was raised
-      p @actual_query
-      p @result
-      p "idk when this would run"
     ensure
       # ensure that this code always runs, no matter what
       # does not change the final value of the block
     end
 
+    @return_type = get_return_type(@result, relation, record)
 
-    if @result.instance_of?(relation) || @result.instance_of?(ActiveRecord::QueryMethods::WhereChain)
-      # @result = eval(query_to_eval)
-      if step_query_exists
-        p "Running steps"
-        @result = execute_steps
-      else
-        p query_to_eval
-        @result = eval(query_to_eval)
-      end
-      @return_type = "collection"
-    elsif @result.instance_of? record
-      @return_type = "record"
-      p "made record"
-    elsif @result.instance_of? Array
-      @return_type = "array"
-    elsif @result == "Record not found" || @result == "Uh oh"  || @result.nil?
-      @return_type = "error"
-    else
-      @return_type = "column"
-      p "=========="
-      p @result
-      p @result.instance_of? record
-      p "=========="
-    end
-    @correct = @level.valid_answer?(q)
-    @type = nil
-    if @result.methods.include?(:klass) && @result.klass == Movie
-      @type = Movie
-    elsif @result.methods.include?(:klass) && @result.klass == Director
-      @type = Director
-    elsif @result.methods.include?(:klass) && @result.klass == Actor
-      @type = Actor
-    elsif @result.methods.include?(:klass) && @result.klass == Role
-      @type = Role
-    end
+    @correct = @level.valid_answer?(last_input)
+    @type = get_type(@result)
+
     @header = figure_it_out(@return_type, @class_name, @column)
-    
     @header_column = find_column(@matched_data)
-    p @header_column
-    p "----"
-    unless @level.id + 1 > Level.last.id 
-      @next_level = @level.id + 1
-    else
-      @next_level = 1
-    end
+ 
+    @next_level = get_next_level(@level.id)
+
   end
 
   def store
@@ -191,6 +132,42 @@ class LevelsController < ApplicationController
       end
     end
 
+    def get_return_type(result, relation, record)
+      if result.instance_of?(relation) || result.instance_of?(ActiveRecord::QueryMethods::WhereChain)
+        # result = eval(query_to_eval)
+        if step_query_exists?
+          p "Running steps"
+          result = execute_steps
+        else
+          p query_to_eval
+          result = eval(query_to_eval)
+        end
+        return_type = "collection"
+      elsif result.instance_of? record
+        return_type = "record"
+        p "made record"
+      elsif result.instance_of? Array
+        return_type = "array"
+      elsif result == "Record not found" || result == "Uh oh"  || result.nil?
+        return_type = "error"
+      else
+        return_type = "column"
+      end
+      return_type
+    end
+
+    def get_type(result)
+      if result.methods.include?(:klass) && result.klass == Movie
+        return Movie
+      elsif result.methods.include?(:klass) && result.klass == Director
+        return Director
+      elsif result.methods.include?(:klass) && result.klass == Actor
+        return Actor
+      elsif result.methods.include?(:klass) && result.klass == Role
+        return Role
+      end
+    end
+
     # Use callbacks to share common setup or constraints between actions.
     def set_level
       if params[:id].nil?
@@ -210,6 +187,44 @@ class LevelsController < ApplicationController
       p "COMBINED"
       p combined_steps
       eval combined_steps
+    end
+
+    def get_relation(class_name)
+      begin
+        # could also determine this from input
+        relation = eval(class_name).all.class
+        record = eval(@class_name).first.class
+      rescue Exception
+        relation = Movie.all.class
+        record = Movie
+      end
+      relation
+    end
+
+    def get_record(class_name)
+      begin
+        record = eval(class_name).first.class
+      rescue Exception
+        record = Movie
+      end
+      record
+    end
+
+    def get_next_level(current_level)
+      unless current_level + 1 > Level.last.id 
+        return current_level + 1
+      else
+        return 1
+      end
+    end
+
+    def step_query_exists?
+      session[:query_type] == "step"
+    end
+
+    def get_matched_data(input)
+      pattern = /([A-Z][a-z]*)\.([a-z]*_?[a-z]*)\(?{?(:?[a-z]*_?[a-z]*):?(=?>?)(\w*)}?\)?\.?([a-z]*)\(?(\d?)\)?/
+      input.match(pattern).to_a.drop(1)
     end
 
     def figure_it_out(type, class_name, column)
@@ -248,5 +263,12 @@ class LevelsController < ApplicationController
       emptied_matches = matched_data.reject(&:empty?)
 
       column = emptied_matches.last    
+    end
+
+    def find_class_name(input)
+      unless ["Movie", "Director", "Actor", "Role"].include? input
+        return "Movie"
+      end
+      input
     end
 end
