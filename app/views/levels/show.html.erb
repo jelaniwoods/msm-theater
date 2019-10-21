@@ -2,50 +2,92 @@
   <div class="col-md-8">
     <%= render object: @level, partial: "card", as: :level %>
   </div>
-  <div class="col-md-4" style="height:85vh;overflow-y:auto">
+  <div class="col-md-4 border rounded p-2" style="height:85vh;overflow-y:auto">
     <div>
       <h5>Models:</h5>
       <hr>
-      <div>
+      <div class="mb-3">
         <h6>Movie</h6>
         <hr>
-        <p>id: integer</p>
-        <p>title: string</p>
-        <p>year: integer</p>
-        <p>director_id: integer</p>
+        <div class="list-group border border-dark rounded">
+          <li class="list-group-item">
+            id: integer
+          </li>
+          <li class="list-group-item">
+            title: string
+          </li>
+          <li class="list-group-item">
+            year: integer
+          </li>
+          <li class="list-group-item">
+            duration: integer
+          </li>
+          <li class="list-group-item">
+            director_id: integer
+          </li>
+        </div>
       </div>
     </div>
-    <hr>
+
     <div>
-      <div>
+      <div class="mb-3">
         <h6>Director</h6>
         <hr>
-        <p>id: integer</p>
-        <p>name: string</p>
-        <p>dob: date</p>
-        <p>bio: text</p>
+        <div class="list-group border border-dark rounded">
+          <li class="list-group-item">
+            id: integer
+          </li>
+          <li class="list-group-item">
+            name: string
+          </li>
+          <li class="list-group-item">
+            dob: date
+          </li>
+          <li class="list-group-item">
+            bio: text
+          </li>
+        </div>
       </div>
     </div>
-    <hr>
     <div>
-      <div>
+      <div class="mb-3">
         <h6>Actor</h6>
         <hr>
-        <p>id: integer</p>
-        <p>name: string</p>
-        <p>dob: date</p>
-        <p>bio: text</p>
+        <div class="list-group border border-dark rounded">
+          <li class="list-group-item">
+            id: integer
+          </li>
+          <li class="list-group-item">
+            name: string
+          </li>
+          <li class="list-group-item">
+            dob: date
+          </li>
+          <li class="list-group-item">
+            bio: text
+          </li>
+        </div>
       </div>
     </div>
-    <hr>
+
     <div>
-      <div>
+      <div class="mb-3">
         <h6>Role</h6>
         <hr>
-        <p>id: integer</p>
-        <p>character_name: string</p>
-        <p>actor_id: integer</p>
-        <p>movie_id: string</p>
+        <div class="list-group border border-dark rounded">
+          <li class="list-group-item">
+            id: integer
+          </li>
+          <li class="list-group-item">
+            character_name: string
+          </li>
+          <li class="list-group-item">
+            actor_id: integer
+          </li>
+          <li class="list-group-item">
+            movie_id: integer
+          </li>
+        </div>
       </div>
     </div>
   </div>
