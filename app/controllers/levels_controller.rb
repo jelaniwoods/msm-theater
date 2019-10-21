@@ -92,7 +92,7 @@ class LevelsController < ApplicationController
 
   def remove_step
     index = params[:index].to_i
-    sess = session[:step_query]
+    p sess = session[:step_query]
     # session[:step_query] = sess - [sess[index]]
     p "===----==="
     p session[:query]
@@ -112,6 +112,7 @@ class LevelsController < ApplicationController
 
     def find_and_remove_query_from_history(query)
       history =  session[:query].reverse
+      step_history =  session[:step_query].reverse
       p history
       p "---"
       p query
@@ -121,8 +122,9 @@ class LevelsController < ApplicationController
         if old_query["input"] == query
           p "Delete this one"
           history.delete_at(index)
+          step_history.delete_at(index)
           session[:query] = history.reverse
-          session[:step_query].reverse.delete_at(index)
+          session[:step_query] = step_history.reverse
           p "====="
           p history
           if history.empty?
