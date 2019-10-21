@@ -9,8 +9,6 @@ class LevelsController < ApplicationController
 
   def results    
 
-    p session[:query_type]
-
     @actual_query = session[:query].last["input"].strip
     query_to_eval = @actual_query.gsub("\r\n", ";")
     last_input = @actual_query.gsub(" ", "")
@@ -68,7 +66,12 @@ class LevelsController < ApplicationController
 
     @return_type = get_return_type(@result, relation, record, query_to_eval)
 
-    @correct = @level.valid_answer?(last_input)
+    if step_query_exists?
+      combined_steps = session[:step_query].join(";")
+      @correct = @level.is_solved_by?(combined_steps)
+    else
+      @correct = @level.is_solved_by?(last_input)
+    end
     @type = get_type(@result)
 
     @header = figure_it_out(@return_type, @class_name, @column)
@@ -132,7 +135,7 @@ class LevelsController < ApplicationController
           if history.empty? || session[:step_query].empty?
             p "No more step"
             clear_queries
-          end
+          end 
           return
         end
       end
@@ -192,7 +195,7 @@ class LevelsController < ApplicationController
 
     def execute_steps
       combined_steps = session[:step_query].join(";")
-      p "COMBINED"
+      p "executing steps"
       eval combined_steps
     end
 
@@ -278,8 +281,24 @@ class LevelsController < ApplicationController
     end
 
     def find_class_name(input)
+      p "getting class name"
+      p input = input.split("=").last
       unless ["Movie", "Director", "Actor", "Role"].include? input
-        return "Movie"
+        # check step queries for variable assignment
+        p "checking steps..."
+        session[:step_query].each do |query|
+          if query.include?("=") && query.include?(input)
+            p "fpuond"
+            location = session[:step_query].index query
+            class_input = session[:step_query][location]
+            removed_variable = class_input.split("=").last
+            actual_class_name = removed_variable.split(".").first
+            return actual_class_name.strip
+          end
+        end
+        # Not a regular query and can't find variable assignment in session so
+        p "Movie i guesss...//"
+        input = "Movie"
       end
       input
     end
