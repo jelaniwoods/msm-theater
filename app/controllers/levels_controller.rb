@@ -9,6 +9,8 @@ class LevelsController < ApplicationController
 
   def results    
 
+    p session[:query_type]
+
     @actual_query = session[:query].last["input"].strip
     query_to_eval = @actual_query.gsub("\r\n", ";")
     last_input = @actual_query.gsub(" ", "")
@@ -127,10 +129,9 @@ class LevelsController < ApplicationController
           session[:step_query] = step_history.reverse
           p "====="
           p history
-          if history.empty?
+          if history.empty? || session[:step_query].empty?
             p "No more step"
-            session[:query] =  [{input: "Movie.all"} ]
-            session[:query_type] = "normal"
+            clear_queries
           end
           return
         end
@@ -192,7 +193,6 @@ class LevelsController < ApplicationController
     def execute_steps
       combined_steps = session[:step_query].join(";")
       p "COMBINED"
-      p combined_steps
       eval combined_steps
     end
 
@@ -269,6 +269,12 @@ class LevelsController < ApplicationController
       emptied_matches = matched_data.reject(&:empty?)
 
       column = emptied_matches.last    
+    end
+
+    def clear_queries
+      session[:step_query] = []
+      session[:query_type] = "normal"
+      session[:query] =  [{input: "Movie.all"} ]
     end
 
     def find_class_name(input)
