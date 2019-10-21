@@ -139,7 +139,6 @@ class LevelsController < ApplicationController
 
     def get_return_type(result, relation, record, query_to_eval)
       if result.instance_of?(relation) || result.instance_of?(ActiveRecord::QueryMethods::WhereChain)
-        # result = eval(query_to_eval)
         if step_query_exists?
           p "Running steps"
           result = execute_steps
@@ -150,11 +149,14 @@ class LevelsController < ApplicationController
         return_type = "collection"
       elsif result.instance_of? record
         return_type = "record"
-        p "made record"
       elsif result.instance_of? Array
         return_type = "array"
-      elsif result == "Record not found" || result == "Uh oh"  || result.nil?
+      elsif result == "Record not found" || result == "Uh oh"
         return_type = "error"
+        p "result #{result}"
+        p "---___----"
+      elsif result.nil?
+        return_type = "nil"
       else
         return_type = "column"
       end
@@ -249,12 +251,11 @@ class LevelsController < ApplicationController
         
       when "array"
         render_this_header = "array_column"
-        
       when "error"
         render_this_header = "error"
-
+      when "nil"
+        render_this_header = "nil"
       when "column"
-        
         case class_name
         when "Movie", "Director", "Actor", "Role"
           render_this_header = "column_header"
