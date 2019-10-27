@@ -20,10 +20,11 @@ class LevelsController < ApplicationController
     # prevent deletion
     # https://stackoverflow.com/a/9622553
     # emptied_matches = @matched_data.reject(&:empty?)
-    emptied_matches = last_input.split(".").reject(&:empty?)
+    # emptied_matches = last_input.split(".").reject(&:empty?).reject(&"all".method(:include?))
+    emptied_matches = @matched_data.reject(&:empty?).reject(&"all".method(:include?))
 
     allow_only = ["where", "find", "find_by", "all"]
-    exclude_methods = ["delete", "delete_all", "destroy", "destroy_all", "update", "update_all", "save"]
+    exclude_methods = ["delete", "delete_all", "destroy", "destroy_all", "update", "update_all", "save", "create", "new"]
 
     p "=============="
     p last_input.split(".")
@@ -35,6 +36,11 @@ class LevelsController < ApplicationController
       p @matched_data 
       last_input = @class_name + ".all"
       p "no deleting, destroying, saving, updating, creating"
+      @actual_query, query_to_eval, session[:query].last["input"] = "\"nope, invalid\"", "\"nope, invalid\"", "\"nope, invalid\""
+      @matched_data = [query_to_eval]
+      if step_query_exists?
+        session[:step_query] = []
+      end
     end
 
 

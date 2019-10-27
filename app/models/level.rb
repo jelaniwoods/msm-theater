@@ -19,7 +19,11 @@ class Level < ApplicationRecord
   def is_solved_by?(query)
     rand_answer = answers.pluck(:content).shuffle.first
     correct_result = eval(rand_answer)
-    user_result = eval(query)
+    begin
+      user_result = eval(query)
+    rescue Exception
+      user_result = "Nope"
+    end
     correct_result == user_result
   end
 end

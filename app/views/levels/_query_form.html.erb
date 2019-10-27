@@ -3,6 +3,6 @@
     <label for="query">Enter a Query</label>
     <input id="query" class="form-control" type="text" name="input" value="<%= !@res.blank? ? @res: "" %>" placeholder="Movie.where({:column => value })">
   </div>
-  <button type="submit" name="step" value="step" class="btn btn-dark">Step</button>
   <button type="submit" name="execute" class="btn btn-dark">Execute</button>
+  <button type="submit" name="step" value="step" class="btn btn-warning">Step</button>
 </form>
