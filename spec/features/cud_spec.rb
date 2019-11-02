@@ -44,7 +44,7 @@ describe "Query: Movie.new.save" do
   end
 end
 
-describe "Step Query: Movie.new.save" do
+describe "Step Query: m.save" do
   it "fails to use the save method" do
     visit "/"
     
@@ -57,7 +57,7 @@ describe "Step Query: Movie.new.save" do
     click_on "Step"
 
     expect(movie_count).to eql Movie.count
-    expect(page).to have_content "Nil"
+    expect(page).to have_content "invalid"
   end
 end
 
@@ -90,7 +90,7 @@ describe "Step Query: a.update(name: 'updated')" do
 
 
     expect(actor_name).to eql Actor.find(1).name
-    expect(page).to have_content "Nil"
+    expect(page).to have_content "invalid"
   end
 
 end
@@ -125,6 +125,70 @@ describe "Query: Movie.find(1).destroy" do
     expect(page).to have_content "invalid"
   end
 
+end
+
+describe "Step Query: d.destroy" do
+  it "fails to use the destroy method" do
+    visit "/"
+    
+    director_count = Director.count
+    fill_in "Enter a Query", with: "d = Director.find(1)"
+    click_on "Step"
+
+    fill_in "Enter a Query", with: "d.destroy"
+    click_on "Step"
+
+    expect(director_count).to eql Director.count
+    expect(page).to have_content "invalid"
+  end
+end
+
+describe "Step Query: d.delete" do
+  it "fails to use the delete method" do
+    visit "/"
+    
+    director_count = Director.count
+    fill_in "Enter a Query", with: "d = Director.find(1)"
+    click_on "Step"
+
+    fill_in "Enter a Query", with: "d.delete"
+    click_on "Step"
+
+    expect(director_count).to eql Director.count
+    expect(page).to have_content "invalid"
+  end
+end
+
+describe "Step Query: d.delete_all" do
+  it "fails to use the delete_all method" do
+    visit "/"
+    
+    director_count = Director.count
+    fill_in "Enter a Query", with: "d = Director.all"
+    click_on "Step"
+
+    fill_in "Enter a Query", with: "d.delete_all"
+    click_on "Step"
+
+    expect(director_count).to eql Director.count
+    expect(page).to have_content "invalid"
+  end
+end
+
+describe "Step Query: d.destroy_all" do
+  it "fails to use the destroy_all method" do
+    visit "/"
+    
+    director_count = Director.count
+    fill_in "Enter a Query", with: "d = Director.all"
+    click_on "Step"
+
+    fill_in "Enter a Query", with: "d.destroy_all"
+    click_on "Step"
+
+    expect(director_count).to eql Director.count
+    expect(page).to have_content "invalid"
+  end
 end
 
 describe "Query: Movie.find(1).delete" do
