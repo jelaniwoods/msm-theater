@@ -9,7 +9,7 @@ feature "Level 1 Query:", type: :feature do
     visit "/"
     
     fill_in "Enter a Query", with: "Movie.where(id: 6)"
-    click_on "Submit"
+    click_on "Execute"
     
     expect(page).to have_selector 'td', text: "6"
     expect(page).to have_selector 'td', text: "The Dark Knight"
@@ -21,7 +21,7 @@ feature "Level 1 Query:", type: :feature do
     visit "/"
     
     fill_in "Enter a Query", with: "Movie.all[3]"
-    click_on "Submit"
+    click_on "Execute"
     
     expect(page).to have_selector 'td', text: "The Dark Knight"
   end

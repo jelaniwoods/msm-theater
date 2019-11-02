@@ -7,7 +7,7 @@ describe "Query: Movie.all" do
     visit "/"
     
     fill_in "Enter a Query", with: "Movie.all"
-    click_on "Submit"
+    click_on "Execute"
     
     visit "/levels/1/results"
 
@@ -25,7 +25,7 @@ describe "Query: Director.all" do
     visit "/"
     
     fill_in "Enter a Query", with: "Director.all"
-    click_on "Submit"
+    click_on "Execute"
     
     visit "/levels/1/results"
 
@@ -41,7 +41,7 @@ describe "Query: Actor.all" do
     visit "/"
     
     fill_in "Enter a Query", with: "Actor.all"
-    click_on "Submit"
+    click_on "Execute"
     
     visit "/levels/1/results"
 
@@ -57,7 +57,7 @@ describe "Query: Role.all" do
     visit "/"
     
     fill_in "Enter a Query", with: "Role.all"
-    click_on "Submit"
+    click_on "Execute"
     
     visit "/levels/1/results"
 
@@ -74,10 +74,9 @@ describe "Query: Random Invalid text" do
     visit "/"
 
     fill_in "Enter a Query", with: "asdfghjkl"
-    click_on "Submit"
+    click_on "Execute"
 
     expect(page).to have_selector 'th', text: 'Error'
-    expect(page).to have_selector 'td', text: 'Uh oh'
   end
 end
 
@@ -86,7 +85,7 @@ describe "Query: Movie.find(0)" do
     visit "/"
 
     fill_in "Enter a Query", with: "Movie.find(0)"
-    click_on "Submit"
+    click_on "Execute"
 
     expect(page).to have_selector 'td', text: 'Record not found'
 

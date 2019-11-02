@@ -8,7 +8,7 @@ describe "Query: Movie.find(1)" do
     visit "/"
     
     fill_in "Enter a Query", with: "Movie.find(1)"
-    click_on "Submit"
+    click_on "Execute"
 
     movie = Movie.find(1)
     
@@ -27,11 +27,9 @@ describe "Query: Movie.find(1)" do
     visit "/"
     
     fill_in "Enter a Query", with: "Movie.find(1)"
-    click_on "Submit"
-
-    movie = Movie.find(1)
+    click_on "Execute"
     
-    expect(page).to have_content "Your Query returned a Record"
+    expect(page).to have_selector 'div', text: 'Record'
   end
 end
 
@@ -40,7 +38,7 @@ describe "Query: Director.find(1)" do
     visit "/"
     
     fill_in "Enter a Query", with: "Director.find(1)"
-    click_on "Submit"
+    click_on "Execute"
 
     director = Director.find(1)
     
@@ -60,7 +58,7 @@ describe "Query: Actor.find(1)" do
     visit "/"
     
     fill_in "Enter a Query", with: "Actor.find(1)"
-    click_on "Submit"
+    click_on "Execute"
 
     actor = Actor.find(1)
     
@@ -80,7 +78,7 @@ describe "Query: Role.find(1)" do
     visit "/"
     
     fill_in "Enter a Query", with: "Role.find(1)"
-    click_on "Submit"
+    click_on "Execute"
 
     role = Role.find(1)
     
@@ -102,7 +100,7 @@ describe "Query: Movie.all" do
     visit "/"
     
     fill_in "Enter a Query", with: "Movie.all"
-    click_on "Submit"
+    click_on "Execute"
 
     movies = Movie.all
     
@@ -117,7 +115,7 @@ describe "Query: Role.all" do
     visit "/"
     
     fill_in "Enter a Query", with: "Role.all"
-    click_on "Submit"
+    click_on "Execute"
 
     roles = Role.all
     
@@ -133,7 +131,7 @@ describe "Query: Director.all" do
     visit "/"
     
     fill_in "Enter a Query", with: "Director.all"
-    click_on "Submit"
+    click_on "Execute"
 
     directors = Director.all
     
@@ -148,7 +146,7 @@ describe "Query: Actor.all" do
     visit "/"
     
     fill_in "Enter a Query", with: "Actor.all"
-    click_on "Submit"
+    click_on "Execute"
 
     actors = Actor.all
     
@@ -168,7 +166,7 @@ feature "Query:", type: :feature do
     visit "/"
     
     fill_in "Enter a Query", with: "Movie.first"
-    click_on "Submit"
+    click_on "Execute"
     
     expect(page).to have_selector 'td', text: "1"
   end
@@ -177,7 +175,7 @@ feature "Query:", type: :feature do
     visit "/"
     
     fill_in "Enter a Query", with: "Movie.first.title"
-    click_on "Submit"
+    click_on "Execute"
     
     expect(page).to have_selector 'td', text: "The Shawshank Redemption"
   end
@@ -186,7 +184,7 @@ feature "Query:", type: :feature do
     visit "/"
     
     fill_in "Enter a Query", with: "Movie.first.title"
-    click_on "Submit"
+    click_on "Execute"
     
     expect(page).to have_selector 'td', text: "The Shawshank Redemption"
   end
@@ -195,7 +193,7 @@ feature "Query:", type: :feature do
     visit "/"
     
     fill_in "Enter a Query", with: "Movie.first.title"
-    click_on "Submit"
+    click_on "Execute"
     
     expect(page).to have_selector 'td', text: "The Shawshank Redemption"
   end
@@ -204,7 +202,7 @@ feature "Query:", type: :feature do
     visit "/"
     
     fill_in "Enter a Query", with: "Movie.first.title"
-    click_on "Submit"
+    click_on "Execute"
     
     expect(page).to have_selector 'td', text: "The Shawshank Redemption"
   end
@@ -218,7 +216,7 @@ feature "Query:", type: :feature do
     visit "/"
     
     fill_in "Enter a Query", with: "Movie.first.title"
-    click_on "Submit"
+    click_on "Execute"
     
     expect(page).to have_selector 'td', text: "The Shawshank Redemption"
   end
@@ -227,7 +225,7 @@ feature "Query:", type: :feature do
     visit "/"
     
     fill_in "Enter a Query", with: "Director.first.id"
-    click_on "Submit"
+    click_on "Execute"
     
     expect(page).to have_selector 'td', text: "1"
   end
@@ -236,7 +234,7 @@ feature "Query:", type: :feature do
     visit "/"
     
     fill_in "Enter a Query", with: "Director.first.name"
-    click_on "Submit"
+    click_on "Execute"
     
     expect(page).to have_selector 'td', text: "Frank Darabont"
   end
@@ -245,7 +243,7 @@ feature "Query:", type: :feature do
     visit "/"
     
     fill_in "Enter a Query", with: "Director.first.dob"
-    click_on "Submit"
+    click_on "Execute"
     
     expect(page).to have_selector 'td', text: Date.parse("January 28, 1959")
   end
@@ -254,7 +252,7 @@ feature "Query:", type: :feature do
     visit "/"
     
     fill_in "Enter a Query", with: "Director.first.bio"
-    click_on "Submit"
+    click_on "Execute"
     
     expect(page).to have_selector 'td', text: "Frank Darabont was born"
   end
