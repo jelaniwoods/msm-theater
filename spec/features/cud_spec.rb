@@ -78,6 +78,23 @@ describe "Query: Movie.find(1).update(title: 'mean')" do
 
 end
 
+describe "Step Query: a.update(name: 'updated')" do
+  it "fails to use the destroy method" do
+    visit "/"
+    
+    actor_name = Actor.first.name
+    fill_in "Enter a Query", with: "a = Actor.first"
+    click_on "Step"
+    fill_in "Enter a Query", with: "a.update(name: 'updated')"
+    click_on "Step"
+
+
+    expect(actor_name).to eql Actor.find(1).name
+    expect(page).to have_content "Nil"
+  end
+
+end
+
 describe "Query: Movie.all.update_all(title: 'mean')" do
   it "fails to use the destroy method" do
     visit "/"
