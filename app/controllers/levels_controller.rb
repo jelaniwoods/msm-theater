@@ -26,13 +26,25 @@ class LevelsController < ApplicationController
     allow_only = ["where", "find", "find_by", "all"]
     exclude_methods = ["delete", "delete_all", "destroy", "destroy_all", "update", "update_all", "save", "create", "new"]
 
+    non_emptied_matches = last_input.split(".")
     p "=============="
-    p last_input.split(".")
+    p @actual_querys
+    p non_emptied_matches
     p @matched_data
     p emptied_matches
     p "=============="
 
     if emptied_matches.any?(&"delete".method(:include?)) || emptied_matches.any?(&"destroy".method(:include?)) || emptied_matches.any?(&"destroy_all".method(:include?)) || emptied_matches.any?(&"delete_all".method(:include?)) || emptied_matches.any?(&"update".method(:include?)) || emptied_matches.any?(&"update_all".method(:include?)) || emptied_matches.any?(&"save".method(:include?)) || emptied_matches.any?(&"create".method(:include?)) || emptied_matches.any?(&"new".method(:include?))  
+      p @matched_data 
+      last_input = @class_name + ".all"
+      p "no deleting, destroying, saving, updating, creating"
+      @actual_query, query_to_eval, session[:query].last["input"] = "\"nope, invalid\"", "\"nope, invalid\"", "\"nope, invalid\""
+      @matched_data = [query_to_eval]
+      if step_query_exists?
+        session[:step_query] = []
+      end
+    # Shouldn't have to do this twice, the matched_data just needs to be improved
+    elsif non_emptied_matches.any?(&"delete".method(:include?)) || non_emptied_matches.any?(&"destroy".method(:include?)) || non_emptied_matches.any?(&"destroy_all".method(:include?)) || non_emptied_matches.any?(&"delete_all".method(:include?)) || non_emptied_matches.any?(&"update".method(:include?)) || non_emptied_matches.any?(&"update_all".method(:include?)) || non_emptied_matches.any?(&"save".method(:include?)) || non_emptied_matches.any?(&"create".method(:include?)) || non_emptied_matches.any?(&"new".method(:include?))  
       p @matched_data 
       last_input = @class_name + ".all"
       p "no deleting, destroying, saving, updating, creating"
