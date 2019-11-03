@@ -43,16 +43,6 @@ class LevelsController < ApplicationController
       if step_query_exists?
         session[:step_query] = ["\"nope, invalid\""]
       end
-    # Shouldn't have to do this twice, the matched_data just needs to be improved
-    elsif non_emptied_matches.any?(&"delete".method(:include?)) || non_emptied_matches.any?(&"destroy".method(:include?)) || non_emptied_matches.any?(&"destroy_all".method(:include?)) || non_emptied_matches.any?(&"delete_all".method(:include?)) || non_emptied_matches.any?(&"update".method(:include?)) || non_emptied_matches.any?(&"update_all".method(:include?)) || non_emptied_matches.any?(&"save".method(:include?)) || non_emptied_matches.any?(&"create".method(:include?)) || non_emptied_matches.any?(&"new".method(:include?))  
-      p @matched_data 
-      last_input = @class_name + ".all"
-      p "non empty - no deleting, destroying, saving, updating, creating"
-      @actual_query, query_to_eval, session[:query].last["input"] = "\"nope, invalid\"", "\"nope, invalid\"", "\"nope, invalid\""
-      @matched_data = [query_to_eval]
-      if step_query_exists?
-        session[:step_query] = ["\"nope, invalid\""]
-      end
     end
 
 
@@ -179,7 +169,7 @@ class LevelsController < ApplicationController
         p "---___----"
       elsif result.nil?
         return_type = "nil"
-      elsif result.class == String && result.include?("undefined")
+      elsif result.class == String && ( result.include?("undefined") || result.include?("error") )
         return_type = "error"
       else
         return_type = "column"
@@ -254,8 +244,10 @@ class LevelsController < ApplicationController
     end
 
     def get_matched_data(input)
-      pattern = /([A-Z][a-z]*)\.([a-z]*_?[a-z]*)\(?{?(:?[a-z]*_?[a-z]*):?(=?>?)(\w*)}?\)?\.?([a-z]*)\(?(\d?)\)?/
-      input.match(pattern).to_a.drop(1)
+      # pattern = /([A-Z][a-z]*)\.([a-z]*_?[a-z]*)\(?{?(:?[a-z]*_?[a-z]*):?(=?>?)(\w*)}?\)?\.?([a-z]*)\(?(\d?)\)?/
+      # input.match(pattern).to_a.drop(1)
+      pattern = /([a-zA-Z]+)(=?)([A-Z]*[a-z]*)\.([a-z]*_?[a-z]*)\(?{?(:?[a-z]*_?[a-z]*):?(=?>?)(\w*)}?\)?\.?([a-z]*)\(?(\d?)\)?/
+      input.match(pattern).to_a
     end
 
     def figure_it_out(type, class_name, column)

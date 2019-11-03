@@ -157,8 +157,53 @@ describe "Query: Actor.all" do
 end
 
 # Return Type: Column
+
+describe "Query: Movie.first.title", type: :feature do
+  it "says 'Your Query returned a Column'" do
+    visit "/"
+    
+    fill_in "Enter a Query", with: "Movie.first.title"
+    click_on "Execute"
+    
+    expect(page).to have_selector 'div', text: 'Column'
+  end
+end
+
+describe "Query: Movie.first.title", type: :feature do
+  it "says 'Your Query returned a Column'" do
+    visit "/"
+    
+    fill_in "Enter a Query", with: "Movie.first.title"
+    click_on "Execute"
+    
+    expect(page).to have_selector 'div', text: 'Column'
+  end
+end
 # Return Type: Array
+
+describe "Query: Movie.all.pluck(:title)", type: :feature do
+  it "says 'Your Query returned an Array'" do
+    visit "/"
+    
+    fill_in "Enter a Query", with: "Movie.all.pluck(:title)"
+    click_on "Execute"
+    
+    expect(page).to have_selector 'div', text: 'Array'
+  end
+end
+
 # Return Type: Error
+
+describe "Query: m.title", type: :feature do
+  it "says 'Your Query returned an Error'" do
+    visit "/"
+    
+    fill_in "Enter a Query", with: "m.title"
+    click_on "Execute"
+    
+    expect(page).to have_selector 'div', text: 'Error'
+  end
+end
 
 feature "Query:", type: :feature do
 
