@@ -169,7 +169,7 @@ class LevelsController < ApplicationController
         p "---___----"
       elsif result.nil?
         return_type = "nil"
-      elsif result.class == String && ( result.include?("undefined") || result.include?("error") )
+      elsif result.class == String && ( result.include?("undefined") || result.include?("error") || result.include?("uninitialized") )
         return_type = "error"
       else
         return_type = "column"

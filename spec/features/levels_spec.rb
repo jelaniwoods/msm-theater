@@ -93,9 +93,9 @@ describe "Query: Movie.find(0)" do
 end
 
 describe "Query: Movie.first.banana_nut" do
-  it "should display error: Attribute doesn't exist for Record" do
+  # it "should display error: Attribute doesn't exist for Record" do
     pending "something else getting finished"
-  end
+  # end
 end
 
 # RSpec.feature "Query: Movie.first.banana_nut", type: :feature do
