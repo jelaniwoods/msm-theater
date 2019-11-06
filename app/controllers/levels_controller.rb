@@ -34,7 +34,8 @@ class LevelsController < ApplicationController
     p emptied_matches
     p "=============="
 
-    if emptied_matches.any?(&"delete".method(:include?)) || emptied_matches.any?(&"destroy".method(:include?)) || emptied_matches.any?(&"destroy_all".method(:include?)) || emptied_matches.any?(&"delete_all".method(:include?)) || emptied_matches.any?(&"update".method(:include?)) || emptied_matches.any?(&"update_all".method(:include?)) || emptied_matches.any?(&"save".method(:include?)) || emptied_matches.any?(&"create".method(:include?)) || emptied_matches.any?(&"new".method(:include?))  
+    # if emptied_matches.any?(&"delete".method(:include?)) || emptied_matches.any?(&"destroy".method(:include?)) || emptied_matches.any?(&"destroy_all".method(:include?)) || emptied_matches.any?(&"delete_all".method(:include?)) || emptied_matches.any?(&"update".method(:include?)) || emptied_matches.any?(&"update_all".method(:include?)) || emptied_matches.any?(&"save".method(:include?)) || emptied_matches.any?(&"create".method(:include?)) || emptied_matches.any?(&"new".method(:include?))  
+    if emptied_matches.include?("delete") || emptied_matches.include?("delete_all") || emptied_matches.include?("destroy") || emptied_matches.include?("destroy_all") || emptied_matches.include?("update") || emptied_matches.include?("update_all") || emptied_matches.include?("save") || emptied_matches.include?("create") || emptied_matches.include?("new")
       p @matched_data 
       last_input = @class_name + ".all"
       p "no deleting, destroying, saving, updating, creating"

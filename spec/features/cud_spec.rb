@@ -88,7 +88,6 @@ describe "Step Query: a.update(name: 'updated')" do
     fill_in "Enter a Query", with: "a.update(name: 'updated')"
     click_on "Step"
 
-
     expect(actor_name).to eql Actor.find(1).name
     expect(page).to have_content "invalid"
   end
