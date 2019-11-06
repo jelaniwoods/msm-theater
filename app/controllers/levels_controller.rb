@@ -295,7 +295,7 @@ class LevelsController < ApplicationController
     end
 
     def find_class_name(input)
-      p "getting class name"
+      p "getting class name for #{input}"
       p input = input.split("=").last
       unless ["Movie", "Director", "Actor", "Role"].include? input
         # check step queries for variable assignment
@@ -307,7 +307,11 @@ class LevelsController < ApplicationController
             class_input = session[:step_query][location]
             removed_variable = class_input.split("=").last
             actual_class_name = removed_variable.split(".").first
-            return actual_class_name.strip
+            if ["Movie", "Director", "Actor", "Role"].include? actual_class_name
+              return actual_class_name.strip
+            else
+              p "Not actually a valid class in Step Queries"
+            end
           end
         end
         # Not a regular query and can't find variable assignment in session so
