@@ -301,15 +301,17 @@ class LevelsController < ApplicationController
         # check step queries for variable assignment
         p "checking steps..."
         session[:step_query].each do |query|
+          p query
           if query.include?("=") && query.include?(input)
-            p "fpuond"
+            p "fpuond #{query}"
             location = session[:step_query].index query
             class_input = session[:step_query][location]
             removed_variable = class_input.split("=").last
-            actual_class_name = removed_variable.split(".").first
+            actual_class_name = removed_variable.split(".").first.strip
             if ["Movie", "Director", "Actor", "Role"].include? actual_class_name
               return actual_class_name.strip
             else
+              p actual_class_name
               p "Not actually a valid class in Step Queries"
             end
           end
