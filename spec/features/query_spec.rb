@@ -205,6 +205,17 @@ describe "Query: m.title", type: :feature do
   end
 end
 
+describe "Query: Doesn't break on empty input", type: :feature do
+  it "redirects to level page'" do
+    visit "/"
+    
+    fill_in "Enter a Query", with: ""
+    click_on "Execute"
+    
+    expect(page.current_path).to eql "/levels/1"
+  end
+end
+
 feature "Query:", type: :feature do
 
   scenario "Display Movie id" do

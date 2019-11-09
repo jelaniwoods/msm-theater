@@ -93,15 +93,18 @@ class LevelsController < ApplicationController
   def store
     @query = {input: params.fetch(:input), level_id: @level.id }
     # @query = {input: params.fetch(:input).gsub(/\s+/, ""), level_id: @level.id }
-
-    session[:query].push @query
-    status = "normal"
-    if params[:step].present?
-      session[:step_query].push params[:input]
-      status = "step"
+    if @query[:input].empty?
+      redirect_to level_path(id: @level.id)
+    else
+      session[:query].push @query
+      status = "normal"
+      if params[:step].present?
+        session[:step_query].push params[:input]
+        status = "step"
+      end
+      session[:query_type] = status
+      redirect_to level_results_path(id: @level.id)
     end
-    session[:query_type] = status
-    redirect_to level_results_path(id: @level.id)
   end
 
   def remove_step
