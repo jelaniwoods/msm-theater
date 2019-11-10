@@ -38,6 +38,20 @@ describe "Step Query: m = Movie.where(title: \"The Dark Knight\")" do
   end
 end
 
+describe "Step Query: Invalid column for Table" do
+  it "says 'Your Query returned an Error'" do
+    visit "/"
+    
+    fill_in "Enter a Query", with: "m = \"The Dark Knight\""
+    click_on "Step"    
+    
+    fill_in "Enter a Query", with: "Director.where(title: m)"
+    click_on "Step"
+    
+    expect(page).to have_selector 'div', text: 'Error'
+  end
+end
+
   
 
 

@@ -16,7 +16,11 @@ class LevelsController < ApplicationController
 
     @class_name = find_class_name(last_input.split(".").first)
     @column = @matched_data[2]
+    # @column = find_column(@matched_data).nil? ? @matched_data[2] : find_column(@matched_data)
 
+    p @column
+    p @matched_data
+    puts "@@@@" * 8
     # prevent deletion
     # https://stackoverflow.com/a/9622553
     # emptied_matches = @matched_data.reject(&:empty?)
@@ -64,9 +68,37 @@ class LevelsController < ApplicationController
       @result = "Record not found"
     rescue Exception => some_other_variable
       p "Any other error in eval"
-      @result = some_other_variable.to_s
+      @result= some_other_variable.to_s
       # code that deals with some other exception
+    rescue ActiveRecord::StatementInvalid
+      p "unable to detect this??? But WHYYY"
     else
+      p "So, no exception?"
+      has_column = ""
+      # "SELECT \"movies\".* FROM \"movies\" WHERE \"movies\".\"name\" = 'fine'"
+      if @result.methods.include? :to_sql
+        sql = @result.to_sql
+        column_matcher = /\"([a-zA-Z]*)\\"/
+        sql_matches = sql.match(column_matcher).to_a
+        # column_name = sql_matches.last
+        column_name = sql.match(/"([a-z].+)"/).to_s.split("\"").last
+        # p @result
+        unless column_name == @class_name.downcase.pluralize
+          case @class_name
+          when "Movie"
+            has_column = Movie.has_attribute? column_name
+          when "Director"
+            has_column = Director.has_attribute? column_name
+          when "Actor"
+            has_column = Actor.has_attribute? column_name
+          when "Role"
+            has_column = Role.has_attribute? column_name
+          end
+          unless has_column
+            @result = "Error: #{@class_name} does not have the column, #{column_name}."
+          end
+        end
+      end
       # code that runs only if *no* exception was raised
     ensure
       # ensure that this code always runs, no matter what
