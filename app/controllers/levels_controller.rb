@@ -66,6 +66,9 @@ class LevelsController < ApplicationController
     rescue ActiveRecord::RecordNotFound => some_variable
       p "error in eval"
       @result = "Record not found"
+    rescue NoMethodError => other_variable
+      @result = other_variable.to_s
+      @result += "\nIt's possible you're calling a method on a COLLECTION of records instead of one record"
     rescue Exception => some_other_variable
       p "Any other error in eval"
       @result= some_other_variable.to_s

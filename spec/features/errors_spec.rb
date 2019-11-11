@@ -52,6 +52,15 @@ describe "Step Query: Invalid column for Table" do
   end
 end
 
-  
+describe "Query: Movie.where(name: 'anything')" do
+  it "should display error: Attribute doesn't exist for Record" do
+    visit "/"
+
+    fill_in "Enter a Query", with: "Movie.where(name: \"anything\")"
+    click_on "Execute"
+
+    expect(page).to have_content("Movie does not have the column, name")
+  end
+end
 
 
