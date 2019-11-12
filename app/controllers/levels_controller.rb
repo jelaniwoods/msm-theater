@@ -5,6 +5,15 @@ class LevelsController < ApplicationController
     session[:query] = []
     session[:cleared] = false
     session[:step_query] = []
+    begin
+      movies = Movie.where(name: "m")
+      p movies
+    rescue => exception
+      p exception
+      p "----"
+    else
+      p movies
+    end
   end
 
   def results    
@@ -62,6 +71,7 @@ class LevelsController < ApplicationController
       else
         @result = eval(query_to_eval)
       end
+      # p @result # need to actually trigger some SQL errors
       # something which might raise an exception
     rescue ActiveRecord::RecordNotFound => some_variable
       p "error in eval"
@@ -69,12 +79,15 @@ class LevelsController < ApplicationController
     rescue NoMethodError => other_variable
       @result = other_variable.to_s
       @result += "\nIt's possible you're calling a method on a COLLECTION of records instead of one record"
+    rescue ActiveRecord::StatementInvalid => error_variable
+      p "No such column for table"
+      @result = error_variable.to_s
+      # @result = "Error: #{@class_name} does not have the column, #{column_name}."
     rescue Exception => some_other_variable
       p "Any other error in eval"
+      p some_other_variable.class
       @result= some_other_variable.to_s
       # code that deals with some other exception
-    rescue ActiveRecord::StatementInvalid
-      p "unable to detect this??? But WHYYY"
     else
       p "So, no exception?"
       has_column = ""
@@ -101,6 +114,10 @@ class LevelsController < ApplicationController
             @result = "Error: #{@class_name} does not have the column, #{column_name}."
           end
         end
+      end
+
+      if @result.class == ActiveRecord::QueryMethods::WhereChain
+        @result = "Error: The .where method requires a Hash as an argument!"
       end
       # code that runs only if *no* exception was raised
     ensure
@@ -208,7 +225,7 @@ class LevelsController < ApplicationController
         p "---___----"
       elsif result.nil?
         return_type = "nil"
-      elsif result.class == String && ( result.include?("undefined") || result.include?("error") || result.include?("uninitialized") )
+      elsif result.class == String && ( result.include?("undefined") || result.downcase.include?("error") || result.include?("uninitialized") )
         return_type = "error"
       else
         return_type = "column"
