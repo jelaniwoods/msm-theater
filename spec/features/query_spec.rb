@@ -313,6 +313,15 @@ feature "Query:", type: :feature do
     expect(page).to have_selector 'td', text: "Frank Darabont was born"
   end
 
+  scenario "Allows mutliple queries in one line" do
+    visit "/levels/2"
+    
+    fill_in "Enter a Query", with: "Director.find(Movie.find_by(title: \"The Shawshank Redemption\").director_id)"
+    click_on "Execute"
+    
+    expect(page).to have_selector 'a', text: "Next Level"
+  end
+
 
   pending "Display Actor id"
   pending "Display Actor name"

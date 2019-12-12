@@ -131,7 +131,7 @@ class LevelsController < ApplicationController
       combined_steps = session[:step_query].join(";")
       @correct = @level.is_solved_by?(combined_steps)
     else
-      @correct = @level.is_solved_by?(last_input)
+      @correct = @level.is_solved_by?(@actual_query)
     end
     @type = get_type(@result)
 
