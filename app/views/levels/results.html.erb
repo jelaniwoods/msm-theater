@@ -6,7 +6,11 @@
 <div class="row">
   <div class="col-12">
     <div class="h3 text-center">
-      Your Query returned <%= @return_type == "column" ? "#{@result.class}".capitalize : @return_type.capitalize %>
+      <% if @return_type == "collection" %>
+        Your Query returned an ActiveRecord:Relation
+      <% else %>
+        Your Query returned <%= @return_type == "column" ? "#{@result.class}".capitalize : @return_type.capitalize %>
+      <% end %>
     </div>
   </div>
 </div>

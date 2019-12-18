@@ -12,7 +12,7 @@ if Rails.env.development?
     :password_confirmation => "password",
   })
 end
-
+# TODO show table info on the results page
 # TODO For level 6, should include some data / answer should use distinct, since number of Roles in film does not necessarily equal number of Actors.
 
 levels = [

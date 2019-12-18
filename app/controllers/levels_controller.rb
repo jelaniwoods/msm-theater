@@ -26,7 +26,6 @@ class LevelsController < ApplicationController
     @class_name = find_class_name(last_input.split(".").first)
     @column = @matched_data[2]
     # @column = find_column(@matched_data).nil? ? @matched_data[2] : find_column(@matched_data)
-    # TODO "returned column" Header should say the class of Object, not column
     p @column
     p @matched_data
     puts "@@@@" * 8
@@ -78,7 +77,7 @@ class LevelsController < ApplicationController
       @result = "Record not found"
     rescue NoMethodError => other_variable
       @result = other_variable.to_s
-      @result += "\nIt's possible you're calling a method on a COLLECTION of records instead of one record"
+      @result += "\nIt's possible you're calling a method on an ActiveRecord:Relation of records instead of one record"
     rescue ActiveRecord::StatementInvalid => error_variable
       p "No such column for table"
       @result = error_variable.to_s
