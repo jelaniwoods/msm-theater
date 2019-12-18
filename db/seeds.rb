@@ -13,6 +13,7 @@ if Rails.env.development?
   })
 end
 
+# TODO For level 6, should include some data / answer should use distinct, since number of Roles in film does not necessarily equal number of Actors.
 
 levels = [
   {number: 1, directions: "Return the entire record from the movies table with the ID of 6"},
@@ -20,9 +21,8 @@ levels = [
   # {number: 2, directions: "Who directed The Shawshank Redemption?"},
   {number: 2, directions: "Return the record of the Director who directed The Shawshank Redemption."},
   {number: 3, directions: "How many movies has Francis Ford Coppola directed?"},
-  {number: 4, directions: "What are the titles of the movies that Francis Ford Coppola directed?"},
+  {number: 4, directions: "Return an Array containing the titles of the movies that Francis Ford Coppola directed?"},
   {number: 5, directions: "How many actors were in The Shawshank Redemption?"},
-  # {number: 6, directions: "What films has Morgan Freeman been in?"},
   {number: 6, directions: "Return all the movie records that has Morgan Freeman been in?"},
 
 ]

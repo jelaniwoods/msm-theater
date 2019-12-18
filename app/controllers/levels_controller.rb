@@ -26,7 +26,7 @@ class LevelsController < ApplicationController
     @class_name = find_class_name(last_input.split(".").first)
     @column = @matched_data[2]
     # @column = find_column(@matched_data).nil? ? @matched_data[2] : find_column(@matched_data)
-
+    # TODO "returned column" Header should say the class of Object, not column
     p @column
     p @matched_data
     puts "@@@@" * 8

@@ -26,4 +26,19 @@ class Level < ApplicationRecord
     end
     correct_result == user_result
   end
+  def Level.to_csv
+    attributes = ["id", "directions", "number"]
+
+    CSV.generate(headers: true) do |csv|
+      csv.add_row(attributes)
+
+      Level.all.each do |level|
+        row = []
+        row.push(level.id.to_s)
+        row.push(level.directions)
+        row.push(level.number.to_s)
+        csv.add_row(row)
+      end
+    end
+  end
 end
