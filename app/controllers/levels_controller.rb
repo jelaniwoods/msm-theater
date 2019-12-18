@@ -5,19 +5,19 @@ class LevelsController < ApplicationController
     session[:query] = []
     session[:cleared] = false
     session[:step_query] = []
-    begin
-      movies = Movie.where(name: "m")
-      p movies
-    rescue => exception
-      p exception
-      p "----"
-    else
-      p movies
-    end
+    # begin
+    #   movies = Movie.where(name: "m")
+    #   p movies
+    # rescue => exception
+    #   p exception
+    #   p "----"
+    # else
+    #   p movies
+    # end
   end
 
   def results    
-
+    # TODO have execute run the steps if there are any
     @actual_query = session[:query].last["input"].strip
     query_to_eval = @actual_query.gsub("\r\n", ";")
     last_input = @actual_query.gsub(" ", "")
@@ -149,7 +149,7 @@ class LevelsController < ApplicationController
     else
       session[:query].push @query
       status = "normal"
-      if params[:step].present?
+      if params[:step].present? || session[:step_query].present?
         session[:step_query].push params[:input]
         status = "step"
       end
