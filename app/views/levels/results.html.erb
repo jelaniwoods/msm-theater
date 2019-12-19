@@ -7,9 +7,10 @@
   <div class="col-12">
     <div class="h3 text-center">
       <% if @return_type == "collection" %>
-        Your Query returned an ActiveRecord:Relation
+        <% relation_result = @result.class.to_s.with_indefinite_article.split %>
+        Your Query returned <%= "#{relation_result.first} <code>#{relation_result.last}</code>".html_safe %>
       <% else %>
-        Your Query returned <%= @return_type == "column" ? "#{@result.class}".capitalize : @return_type.capitalize %>
+        Your Query returned <%= @return_type == "column" ? @result.class.to_s.with_indefinite_article : @return_type.to_s.capitalize.with_indefinite_article %>
       <% end %>
     </div>
   </div>
